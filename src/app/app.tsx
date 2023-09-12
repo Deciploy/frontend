@@ -1,8 +1,14 @@
-import { Button, Components } from '@components';
+import { Button } from '@components';
 export function App() {
   return (
     <div className="flex justify-center">
-      <Button />
+      <Button
+        onClick={() => {
+          console.log('clicked');
+        }}
+      >
+        Filled
+      </Button>
     </div>
   );
 }
