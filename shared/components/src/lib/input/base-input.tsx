@@ -33,9 +33,15 @@ export interface InputProps {
   type?: HTMLInputTypeAttribute;
 
   /**
+   * If true, the input will be full width
+   * @default false
+   * */
+  fullWidth?: boolean;
+
+  /**
    * The onChange event handler
    * */
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (e: string) => void;
 }
 
 export const BaseInput: FC<InputProps> = ({
@@ -45,6 +51,7 @@ export const BaseInput: FC<InputProps> = ({
   isError,
   message,
   type = 'text',
+  fullWidth = false,
   onChange,
 }) => {
   const borderStyle = isError
@@ -52,7 +59,7 @@ export const BaseInput: FC<InputProps> = ({
     : ' focus:ring-primary-500 focus:border-primary-500';
 
   return (
-    <div>
+    <div className={fullWidth ? 'w-full' : ''}>
       <label className="block mb-2 text-sm font-medium text-gray-900">
         {label}
       </label>
@@ -60,7 +67,7 @@ export const BaseInput: FC<InputProps> = ({
       <input
         type={type}
         value={value}
-        onChange={onChange}
+        onChange={(e) => onChange?.(e.target.value)}
         className={`bg-secondary-200 border ${borderStyle} text-gray-900 text-sm rounded-full leading-tight focus:outline-none block w-full p-2.5`}
         placeholder={placeholder}
       />
