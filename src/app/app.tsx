@@ -1,12 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
-
-import NxWelcome from './nx-welcome';
-
 export function App() {
   return (
-    <div>
-      <NxWelcome title="deciploy" />
+    <div className="flex justify-center bg-indigo-500 p-2 text-white">
+      Deciploy Application
     </div>
   );
 }
