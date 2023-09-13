@@ -1,16 +1,10 @@
-import { Button } from '@components';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { routes } from '../config/routes';
+
 export function App() {
-  return (
-    <div className="flex justify-center">
-      <Button
-        onClick={() => {
-          console.log('clicked');
-        }}
-      >
-        Hello
-      </Button>
-    </div>
-  );
+  const router = createBrowserRouter(routes);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
