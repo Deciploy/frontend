@@ -26,12 +26,21 @@ jobs:
     if: github.ref == 'refs/heads/dev'
 
     steps:
-    - name: Install dependencies
-      run: npm install
-      
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Build and Deploy
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
       run: |
         npm run build
+      
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: './dist/deciploy'
+        production-deploy: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
