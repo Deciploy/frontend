@@ -26,12 +26,12 @@ jobs:
     if: github.ref == 'refs/heads/dev'
 
     steps:
-    - name: Install dependencies
-      run: npm install
-      
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install dependencies
+      run: npm install
+      
     - name: Build
       run: |
         npm run build
