@@ -13,6 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Install dependencies
+      run: npm install
+
     - name: Run tests
       run: |
          npm run test
@@ -23,6 +26,9 @@ jobs:
     if: github.ref == 'refs/heads/dev'
 
     steps:
+    - name: Install dependencies
+      run: npm install
+      
     - name: Checkout code
       uses: actions/checkout@v2
 
