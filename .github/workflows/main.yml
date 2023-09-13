@@ -35,13 +35,11 @@ jobs:
     - name: Build
       run: |
         npm run build
-        eco secrets.NETLIFY_AUTH_TOKEN
-        eco vars.NETLIFY_SITE_ID
         
     - name: Deploy to Netlify
-      uses: jsmrcaga/action-netlify-deploy@v2.0.0
+      uses: nwtgck/actions-netlify@v2.0
       with:
-        build_directory: './dist'
+        publish-dir: './dist'
       env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ vars.NETLIFY_SITE_ID }}   
+        NETLIFY_AUTH_TOKEN: 9IszEnkMnA_CpIxvZnUDWTQ5Baa28hgkr7gmpjZlBGM
+        NETLIFY_SITE_ID: 74ab3984-498f-4157-a19f-2a441a5b74e2 
