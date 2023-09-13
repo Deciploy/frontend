@@ -7,7 +7,7 @@ export function App() {
           console.log('clicked');
         }}
       >
-        Filled
+        Hello
       </Button>
     </div>
   );
