@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { BaseInput, InputProps } from './base-input';
+import { BaseInput, InputProps } from './BaseInput';
 
 interface TextInputProps extends Omit<InputProps, 'type'> {
   /**
