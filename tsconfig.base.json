@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@components": ["shared/components/src/index.ts"]
+      "@components": ["shared/components/src/index.ts"],
+      "@deciploy/constants": ["shared/constants/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
