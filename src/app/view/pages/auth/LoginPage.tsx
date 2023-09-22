@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { TextInput, Button } from '@components';
 import { Link } from 'react-router-dom';
+import logo from 'src/assets/images/logo.png';
 
 const LoginPage: FC = () => {
   return (
@@ -16,6 +17,9 @@ const LoginPage: FC = () => {
 
       <div className="col-span-2 md:col-span-2 p-4 flex justify-center items-center h-screen ">
         <div className="grid grid-cols-1 gap-4 max-w-screen-sm w-full flex justify-center items-center">
+          <div className="flex justify-center items-center mb-20">
+            <img src={logo} className="h-10 mr-4" alt="App Logo" />
+          </div>
           <div className="flex justify-center items-center mb-20">
             <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-primary">
               Sign in to Deciploy
