@@ -42,6 +42,11 @@ export interface InputProps {
    * The onChange event handler
    * */
   onChange?: (e: string) => void;
+
+  /**
+   * The onBlur event handler
+   * */
+  onBlur?: (e: string) => void;
 }
 
 export const BaseInput: FC<InputProps> = ({
@@ -68,6 +73,7 @@ export const BaseInput: FC<InputProps> = ({
         type={type}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        onBlur={(e) => onChange?.(e.target.value)}
         className={`bg-secondary-200 border ${borderStyle} text-gray-900 text-sm rounded-full leading-tight focus:outline-none block w-full p-2.5`}
         placeholder={placeholder}
       />
