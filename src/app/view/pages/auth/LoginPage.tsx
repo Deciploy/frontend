@@ -33,7 +33,7 @@ const LoginPage: FC = () => {
       </div>
 
       <div className="col-span-2 md:col-span-2 p-4 flex justify-center items-center h-screen ">
-        <div className="grid grid-cols-1 gap-4 max-w-screen-sm w-full flex justify-center items-center">
+        <div className="grid grid-cols-1 gap-4 max-w-screen-sm w-full justify-center items-center">
           <div className="flex justify-center items-center mb-20">
             <img src={logo} className="h-10 mr-4" alt="App Logo" />
           </div>
@@ -64,7 +64,7 @@ const LoginPage: FC = () => {
                     onChange={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
-                    isError={touched.email && !!errors.email}
+                    isError={!!errors.email}
                     message={errors.email}
                   />
 
@@ -74,7 +74,7 @@ const LoginPage: FC = () => {
                     onChange={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
-                    isError={touched.password && !!errors.password}
+                    isError={!!errors.password}
                     message={errors.password}
                   />
 
