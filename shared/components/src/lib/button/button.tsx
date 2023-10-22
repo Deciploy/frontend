@@ -6,28 +6,43 @@ export interface ButtonProps {
    * @default 'filled'
    * */
   variant?: 'filled' | 'outlined' | 'rounded' | 'text';
+
   /**
    * The color of the button
    * @default 'primary'
    * */
   color?: 'primary' | 'secondary' | 'warning' | 'success';
+
   /**
    * The size of the button
    * @default 'md'
    * */
-
   size?: 'sm' | 'md' | 'lg';
+
   /**
    * If true, the button will be disabled
    * @default false
    * */
-
   disabled?: boolean;
+
   /**
    * If true, the button will be full width
    * @default false
    * */
   fullWidth?: boolean;
+
+  /**
+   * If true, the button will be loading
+   * @default false
+   * */
+  loading?: boolean;
+
+  /**
+   * The loading text
+   * @default 'Loading...'
+   * */
+  loadingText?: string;
+
   /**
    * The onClick event handler
    * */
@@ -41,17 +56,20 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
   size = 'md',
   fullWidth = false,
   disabled = false,
+  loading = false,
+  loadingText = 'Loading...',
   onClick,
 }) => {
   return (
     <button
-      disabled={disabled}
+      type="button"
+      disabled={disabled || loading}
       onClick={onClick && onClick}
       className={`${styles[variant][color]} ${sizes[size]} ${
         fullWidth ? 'w-full' : ''
       } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
     >
-      {children}
+      {loading ? loadingText : children}
     </button>
   );
 };
