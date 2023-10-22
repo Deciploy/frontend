@@ -7,10 +7,16 @@ import SamplePage from '../../app/view/pages/sample/SamplePage';
 import { MdDashboard } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
 
+export const routeNames = {
+  home: '/',
+  login: '/login',
+  sample: '/sample',
+};
+
 export const appRoutes: AppRoute = {
   routes: [
     {
-      path: '/login',
+      path: routeNames.login,
       Component: LoginPage,
     },
   ],
@@ -22,7 +28,7 @@ export const appRoutes: AppRoute = {
       Icon: MdDashboard,
     },
     {
-      path: 'sample',
+      path: routeNames.sample,
       Component: SamplePage,
       title: 'Sample',
       Icon: AiFillEye,
