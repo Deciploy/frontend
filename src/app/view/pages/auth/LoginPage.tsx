@@ -19,7 +19,7 @@ const LoginPage: FC = () => {
   const { set } = useAuth<User>();
 
   const { state } = useLocation();
-  const navigation = useNavigate();
+  const navigate = useNavigate();
 
   const initialValues: LoginValues = {
     email: '',
@@ -34,9 +34,9 @@ const LoginPage: FC = () => {
       set(token.token, new Date(token.expiration), user);
 
       if (state && 'redirect' in state) {
-        navigation(state.redirect);
+        navigate(state.redirect);
       } else {
-        navigation('/');
+        navigate('/');
       }
     }
   };
