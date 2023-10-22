@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { TextInput, Button } from '@components';
+import { TextInput, Button, PasswordInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
 import { useRequest } from '@http-client';
 import { useAuth } from '@user-auth';
@@ -16,7 +16,7 @@ interface LoginValues {
 
 const LoginPage: FC = () => {
   const { loading, error, post } = useRequest<NetworkResponse<AuthUserData>>();
-  const { set, isAuthenticated } = useAuth<User>();
+  const { set } = useAuth<User>();
 
   const { state } = useLocation();
   const navigation = useNavigate();
@@ -39,22 +39,18 @@ const LoginPage: FC = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3">
       <div className="col-span-1 md:col-span-1 bg-primary flex flex-col justify-center items-center h-screen">
-        <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">
-          Hi
-        </h1>
-        <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          Welcome Back {isAuthenticated ? 'Authenticated' : 'Not Authenticated'}
-        </p>
+        <h1 className="text-6xl text-white">Hi</h1>
+        <p className="text-3xl text-white">Welcome Back</p>
       </div>
 
-      <div className="col-span-2 md:col-span-2 p-4 flex justify-center items-center h-screen ">
-        <div className="grid grid-cols-1 gap-4 max-w-screen-sm w-full justify-center items-center">
-          <div className="flex justify-center items-center mb-20">
+      <div className="col-span-2 md:col-span-2 p-4 flex justify-center items-center h-screen">
+        <div className="flex flex-col gap-10">
+          <div className="flex justify-center items-center">
             <img src={logo} className="h-10 mr-4" alt="App Logo" />
           </div>
-          <div className="flex justify-center items-center mb-20">
+          <div className="flex justify-center items-center">
             <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-primary">
-              Sign in to Deciploy
+              Login in to Deciploy
             </h2>
           </div>
 
@@ -82,7 +78,7 @@ const LoginPage: FC = () => {
                   message={errors.email}
                 />
 
-                <TextInput
+                <PasswordInput
                   placeholder="Password"
                   fullWidth
                   onChange={handleChange('password')}
@@ -111,8 +107,10 @@ const LoginPage: FC = () => {
                   fullWidth
                   disabled={loading}
                   onClick={handleSubmit}
+                  loading={loading}
+                  loadingText="Logging in..."
                 >
-                  {loading ? 'Login....' : 'Sign In'}
+                  LOGIN
                 </Button>
               </div>
             )}
