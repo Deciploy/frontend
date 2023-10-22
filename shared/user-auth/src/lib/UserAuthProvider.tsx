@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
-import {
-  AuthData,
-  AuthDataContextValue,
-  UserAuthContext,
-} from './AuthDataContext';
+import { AuthDataContextValue, UserAuthContext } from './AuthDataContext';
+import { AuthData } from './types';
 
 interface UserAuthProviderProps<T> {
   children: React.ReactNode;
