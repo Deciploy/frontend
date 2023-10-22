@@ -1,10 +1,13 @@
 import { FC } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TextInput, Button } from '@components';
-import { Link } from 'react-router-dom';
-import logo from 'src/assets/images/logo.png';
-import { Formik } from 'formik';
 import { LoginSchema } from '@deciploy/constants';
-import { on } from 'events';
+import { useRequest } from '@http-client';
+import { useAuth } from '@user-auth';
+import { Formik } from 'formik';
+import { ErrorText } from '../../common/ErrorText';
+import { AuthUserData, NetworkResponse, User } from '../../../../data';
+import logo from 'src/assets/images/logo.png';
 
 interface LoginValues {
   email: string;
@@ -12,13 +15,25 @@ interface LoginValues {
 }
 
 const LoginPage: FC = () => {
+  const { loading, error, post } = useRequest<NetworkResponse<AuthUserData>>();
+  const { set, isAuthenticated } = useAuth<User>();
+
+  const { state } = useLocation();
+  const navigation = useNavigate();
+
   const initialValues: LoginValues = {
     email: '',
     password: '',
   };
 
-  const handleSubmit = (values: LoginValues) => {
-    console.log(values);
+  const handleSubmit = async (values: LoginValues) => {
+    const response = await post('auth/login', values);
+
+    if (response?.data) {
+      const { token, user } = response.data;
+      set(token.token, new Date(token.expiration), user);
+      navigation(state?.redirect ? state.from : '/');
+    }
   };
 
   return (
@@ -28,7 +43,7 @@ const LoginPage: FC = () => {
           Hi
         </h1>
         <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl">
-          Welcome Back
+          Welcome Back {isAuthenticated ? 'Authenticated' : 'Not Authenticated'}
         </p>
       </div>
 
@@ -56,46 +71,50 @@ const LoginPage: FC = () => {
               errors,
               touched,
             }) => (
-              <>
-                <div className="max-w-md w-full mx-auto space-y-5">
-                  <TextInput
-                    placeholder="User Name"
-                    fullWidth
-                    onChange={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    isError={!!errors.email}
-                    message={errors.email}
-                  />
+              <div className="max-w-md w-full mx-auto space-y-5">
+                <TextInput
+                  placeholder="User Name"
+                  fullWidth
+                  onChange={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                  isError={!!errors.email}
+                  message={errors.email}
+                />
 
-                  <TextInput
-                    placeholder="Password"
-                    fullWidth
-                    onChange={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    isError={!!errors.password}
-                    message={errors.password}
-                  />
+                <TextInput
+                  placeholder="Password"
+                  fullWidth
+                  onChange={handleChange('password')}
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  isError={!!errors.password}
+                  message={errors.password}
+                />
 
-                  <div className="flex justify-between items-center ">
-                    <div className="flex items-center">
-                      <input type="checkbox" className="mr-2" />
-                      <p className="text-gray-700">Remember me</p>
-                    </div>
-                    <Link to="#" className="text-primary hover:underline">
-                      Forgot Password?
-                    </Link>
+                <div className="flex justify-between items-center ">
+                  <div className="flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    <p className="text-gray-700">Remember me</p>
                   </div>
-                  <br />
+                  <Link to="#" className="text-primary hover:underline">
+                    Forgot Password?
+                  </Link>
                 </div>
 
-                <div className="max-w-sm w-full mx-auto mt-10">
-                  <Button variant="rounded" fullWidth onClick={handleSubmit}>
-                    Sign In
-                  </Button>
-                </div>
-              </>
+                <ErrorText error={error?.message} />
+
+                <br />
+
+                <Button
+                  variant="rounded"
+                  fullWidth
+                  disabled={loading}
+                  onClick={handleSubmit}
+                >
+                  {loading ? 'Login....' : 'Sign In'}
+                </Button>
+              </div>
             )}
           </Formik>
         </div>
