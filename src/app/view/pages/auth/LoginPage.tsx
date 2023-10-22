@@ -28,11 +28,16 @@ const LoginPage: FC = () => {
 
   const handleSubmit = async (values: LoginValues) => {
     const response = await post('auth/login', values);
-
+    console.log(response);
     if (response?.data) {
       const { token, user } = response.data;
       set(token.token, new Date(token.expiration), user);
-      navigation(state?.redirect ? state.from : '/');
+
+      if (state && 'redirect' in state) {
+        navigation(state.redirect);
+      } else {
+        navigation('/');
+      }
     }
   };
 
