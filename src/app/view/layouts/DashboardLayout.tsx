@@ -2,16 +2,24 @@ import { FC, useMemo, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { RoutesConfig } from '../../../config';
 import logo from '../../../assets/images/logo.png';
+import { useAuth } from '@user-auth';
+import { User } from '../../../data';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  const { user, unset } = useAuth<User>();
+
   const currentPath = useMemo(() => {
     const pathName = pathname.split('/').filter((item) => item !== '');
     return pathName[0];
   }, [pathname]);
+
+  const handleLogout = () => {
+    unset();
+  };
 
   return (
     <>
@@ -42,9 +50,9 @@ const DashboardLayout: FC = () => {
                 {userMenuOpen && (
                   <div className="z-50 my-4 absolute right-1 top-10 block text-base list-none bg-white divide-y divide-gray-100 rounded shadow">
                     <div className="px-4 py-3">
-                      <p className="text-sm text-gray-900">Imasha Weerakoon</p>
+                      <p className="text-sm text-gray-900">{user?.fullName}</p>
                       <p className="text-sm font-medium text-gray-900 truncate ">
-                        imasha@testmail.com
+                        {user?.team}
                       </p>
                     </div>
                     <ul className="py-1">
@@ -67,12 +75,12 @@ const DashboardLayout: FC = () => {
                       </li>
 
                       <li>
-                        <Link
-                          to=""
+                        <div
+                          onClick={handleLogout}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
                         >
-                          Sign out
-                        </Link>
+                          Log out
+                        </div>
                       </li>
                     </ul>
                   </div>
