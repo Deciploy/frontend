@@ -2,5 +2,6 @@
 export interface AuthData<T = any> {
   token: string;
   expiresAt?: Date;
+  isRemembered: boolean;
   userData?: T;
 }

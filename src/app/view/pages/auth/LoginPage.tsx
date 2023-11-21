@@ -31,7 +31,7 @@ const LoginPage: FC = () => {
 
     if (response?.data) {
       const { token, user } = response.data;
-      set(token.token, new Date(token.expiration), user);
+      set(token.token, user, { isRemembered: true });
 
       if (state && 'redirect' in state) {
         navigate(state.redirect);
