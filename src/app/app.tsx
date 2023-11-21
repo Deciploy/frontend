@@ -10,7 +10,6 @@ export function App() {
   const handleAuthStateChange = (authData: AuthData | null) => {
     if (authData?.token) {
       httpClient.interceptors.request.use((config) => {
-        console.log(config.url?.includes('auth'));
         if (!config.url?.includes('auth')) {
           config.headers['Authorization'] = `Bearer ${authData.token}`;
         }
