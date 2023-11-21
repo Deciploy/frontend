@@ -1,12 +1,22 @@
 import { httpClient } from '@http-client';
+import { useAuth } from '@user-auth';
 import { FC, PropsWithChildren, useEffect } from 'react';
+import { User } from 'src/data';
 
 const AppLauncherProvider: FC<PropsWithChildren> = ({ children }) => {
+  const { token } = useAuth();
+
   useEffect(() => {
     /*
       set base url for http client
     */
     httpClient.defaults.baseURL = process.env.NX_APP_API_BASE_URL;
+
+    /*
+      set access token for http client
+    */
+    httpClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     /*
       set request interceptor
       handle request errors

@@ -9,5 +9,7 @@ export const useAuth = <T>() => {
 
   const user = authData?.userData;
 
-  return { set, unset, isAuthenticated, user };
+  const token = authData?.token;
+
+  return { set, unset, isAuthenticated, user, token };
 };
