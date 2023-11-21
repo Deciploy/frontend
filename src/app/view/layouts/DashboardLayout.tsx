@@ -4,6 +4,7 @@ import { RoutesConfig } from '../../../config';
 import logo from '../../../assets/images/logo.png';
 import { useAuth } from '@user-auth';
 import { User } from '../../../data';
+import { Avatar } from '../common/Avatar';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();
@@ -39,11 +40,7 @@ const DashboardLayout: FC = () => {
                     className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                   >
                     <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                      alt="user"
-                    />
+                    <Avatar fullName={user?.fullName} size={8} />
                   </button>
                 </div>
 
@@ -51,8 +48,11 @@ const DashboardLayout: FC = () => {
                   <div className="z-50 my-4 absolute right-1 top-10 block text-base list-none bg-white divide-y divide-gray-100 rounded shadow">
                     <div className="px-4 py-3">
                       <p className="text-sm text-gray-900">{user?.fullName}</p>
-                      <p className="text-sm font-medium text-gray-900 truncate ">
+                      <p className="text-sm font-medium text-gray-500 truncate">
                         {user?.team}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {user?.company}
                       </p>
                     </div>
                     <ul className="py-1">
