@@ -35,13 +35,11 @@ const DashboardLayout: FC = () => {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button
+                  <Avatar
+                    fullName={user?.fullName}
+                    size={8}
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    <Avatar fullName={user?.fullName} size={8} />
-                  </button>
+                  />
                 </div>
 
                 {userMenuOpen && (
