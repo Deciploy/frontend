@@ -3,11 +3,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TextInput, Button, PasswordInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
 import { useRequest } from '@http-client';
-import { useAuth } from '@user-auth';
 import { Formik } from 'formik';
 import { ErrorText } from '../../common/ErrorText';
 import { AuthUserData, NetworkResponse, User } from '../../../../data';
 import logo from 'src/assets/images/logo.png';
+import { useAuth } from 'react-auth-utils';
 
 interface LoginValues {
   email: string;
@@ -16,7 +16,7 @@ interface LoginValues {
 
 const LoginPage: FC = () => {
   const { loading, error, post } = useRequest<NetworkResponse<AuthUserData>>();
-  const { set } = useAuth<User>();
+  const { signIn } = useAuth<User>();
 
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const LoginPage: FC = () => {
 
     if (response?.data) {
       const { token, user } = response.data;
-      set(token.token, user, { isRemembered: true });
+      signIn(token.token, 9, user);
 
       if (state && 'redirect' in state) {
         navigate(state.redirect);

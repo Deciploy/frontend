@@ -6,7 +6,8 @@ import SamplePage from '../../app/view/pages/sample/SamplePage';
 
 import { MdDashboard } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
-import { RequireAuth } from '../../app/view/common/RequireAuth';
+
+import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 
 export const routeNames = {
   home: '/',
@@ -25,9 +26,9 @@ export const appRoutes: AppRoute = {
     {
       index: true,
       Component: () => (
-        <RequireAuth>
+        <ProtectedRoute>
           <HomePage />
-        </RequireAuth>
+        </ProtectedRoute>
       ),
       title: 'Home',
       Icon: MdDashboard,
@@ -35,9 +36,9 @@ export const appRoutes: AppRoute = {
     {
       path: routeNames.sample,
       Component: () => (
-        <RequireAuth>
+        <ProtectedRoute>
           <SamplePage />
-        </RequireAuth>
+        </ProtectedRoute>
       ),
       title: 'Sample',
       Icon: AiFillEye,
