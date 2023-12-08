@@ -2,16 +2,16 @@ import { FC, useMemo, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { RoutesConfig } from '../../../config';
 import logo from '../../../assets/images/logo.png';
-import { useAuth } from '@user-auth';
 import { User } from '../../../data';
 import { Avatar } from '../common/Avatar';
+import { useAuth } from 'react-auth-utils';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const { user, unset } = useAuth<User>();
+  const { user, signOut } = useAuth<User>();
 
   const currentPath = useMemo(() => {
     const pathName = pathname.split('/').filter((item) => item !== '');
@@ -19,7 +19,7 @@ const DashboardLayout: FC = () => {
   }, [pathname]);
 
   const handleLogout = () => {
-    unset();
+    signOut();
   };
 
   return (
