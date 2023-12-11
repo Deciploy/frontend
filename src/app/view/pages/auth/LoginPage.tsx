@@ -12,6 +12,7 @@ import { useAuth } from 'react-auth-utils';
 interface LoginValues {
   email: string;
   password: string;
+  isRemember: boolean;
 }
 
 const LoginPage: FC = () => {
@@ -24,6 +25,7 @@ const LoginPage: FC = () => {
   const initialValues: LoginValues = {
     email: '',
     password: '',
+    isRemember: false,
   };
 
   const handleSubmit = async (values: LoginValues) => {
@@ -31,7 +33,10 @@ const LoginPage: FC = () => {
 
     if (response?.data) {
       const { token, user } = response.data;
-      signIn(token.token, 9, user);
+      const expireAt = new Date(token.expiration).getTime();
+      signIn(token.token, expireAt, user, {
+        isRemembered: values.isRemember,
+      });
 
       if (state && 'redirect' in state) {
         navigate(state.redirect);
@@ -95,7 +100,11 @@ const LoginPage: FC = () => {
 
                 <div className="flex justify-between items-center ">
                   <div className="flex items-center">
-                    <input type="checkbox" className="mr-2" />
+                    <input
+                      type="checkbox"
+                      className="mr-2"
+                      onChange={handleChange('isRemember')}
+                    />
                     <p className="text-gray-700">Remember me</p>
                   </div>
                   <Link to="#" className="text-primary hover:underline">
