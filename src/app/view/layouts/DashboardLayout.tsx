@@ -1,10 +1,11 @@
 import { FC, useMemo, useState } from 'react';
+import { useAuth } from 'react-auth-utils';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { RoutesConfig } from '../../../config';
+
 import logo from '../../../assets/images/logo.png';
+import { RoutesConfig } from '../../../config';
 import { User } from '../../../data';
 import { Avatar } from '../common/Avatar';
-import { useAuth } from 'react-auth-utils';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();

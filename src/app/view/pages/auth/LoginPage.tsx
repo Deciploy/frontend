@@ -1,12 +1,13 @@
-import { FC } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { TextInput, Button, PasswordInput } from '@components';
+import { Button, PasswordInput, TextInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
 import { useRequest } from '@http-client';
 import { Formik } from 'formik';
-import { AuthUserData, NetworkResponse, User } from '../../../../data';
-import logo from 'src/assets/images/logo.png';
+import { FC } from 'react';
 import { useAuth } from 'react-auth-utils';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import logo from 'src/assets/images/logo.png';
+
+import { AuthUserData, NetworkResponse, User } from '../../../../data';
 import { AlertMessage } from '../../common/AlertMessage';
 
 interface LoginValues {

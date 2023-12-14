@@ -1,9 +1,10 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { httpClient } from '@http-client';
+import { AuthProvider } from 'react-auth-utils';
+import { AuthState } from 'react-auth-utils/src/lib/types';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import { RoutesConfig } from '../config';
 import AppLauncherProvider from './providers/AppLauncherProvider';
-import { httpClient } from '@http-client';
-import { AuthState } from 'react-auth-utils/src/lib/types';
-import { AuthProvider } from 'react-auth-utils';
 
 export function App() {
   const router = createBrowserRouter(RoutesConfig.routes);
