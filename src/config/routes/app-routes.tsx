@@ -7,23 +7,39 @@ import SamplePage from '../../app/view/pages/sample/SamplePage';
 import { MdDashboard } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
 
+import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
+
+export const routeNames = {
+  home: '/',
+  login: '/login',
+  sample: '/sample',
+};
+
 export const appRoutes: AppRoute = {
   routes: [
     {
-      path: '/login',
+      path: routeNames.login,
       Component: LoginPage,
     },
   ],
   menuRoutes: [
     {
       index: true,
-      Component: HomePage,
+      Component: () => (
+        <ProtectedRoute>
+          <HomePage />
+        </ProtectedRoute>
+      ),
       title: 'Home',
       Icon: MdDashboard,
     },
     {
-      path: 'sample',
-      Component: SamplePage,
+      path: routeNames.sample,
+      Component: () => (
+        <ProtectedRoute>
+          <SamplePage />
+        </ProtectedRoute>
+      ),
       title: 'Sample',
       Icon: AiFillEye,
     },

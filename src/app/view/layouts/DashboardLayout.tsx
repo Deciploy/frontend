@@ -1,17 +1,27 @@
 import { FC, useMemo, useState } from 'react';
+import { useAuth } from 'react-auth-utils';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { RoutesConfig } from '../../../config';
+
 import logo from '../../../assets/images/logo.png';
+import { RoutesConfig } from '../../../config';
+import { User } from '../../../data';
+import { Avatar } from '../common/Avatar';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
+  const { user, signOut } = useAuth<User>();
+
   const currentPath = useMemo(() => {
     const pathName = pathname.split('/').filter((item) => item !== '');
     return pathName[0];
   }, [pathname]);
+
+  const handleLogout = () => {
+    signOut();
+  };
 
   return (
     <>
@@ -26,25 +36,22 @@ const DashboardLayout: FC = () => {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button
+                  <Avatar
+                    fullName={user?.fullName}
+                    size={8}
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                      alt="user"
-                    />
-                  </button>
+                  />
                 </div>
 
                 {userMenuOpen && (
                   <div className="z-50 my-4 absolute right-1 top-10 block text-base list-none bg-white divide-y divide-gray-100 rounded shadow">
                     <div className="px-4 py-3">
-                      <p className="text-sm text-gray-900">Imasha Weerakoon</p>
-                      <p className="text-sm font-medium text-gray-900 truncate ">
-                        imasha@testmail.com
+                      <p className="text-sm text-gray-900">{user?.fullName}</p>
+                      <p className="text-sm font-medium text-gray-500 truncate">
+                        {user?.team}
+                      </p>
+                      <p className="text-sm text-gray-500 truncate">
+                        {user?.company}
                       </p>
                     </div>
                     <ul className="py-1">
@@ -67,12 +74,12 @@ const DashboardLayout: FC = () => {
                       </li>
 
                       <li>
-                        <Link
-                          to=""
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
+                        <div
+                          onClick={handleLogout}
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                         >
-                          Sign out
-                        </Link>
+                          Log out
+                        </div>
                       </li>
                     </ul>
                   </div>
@@ -91,7 +98,7 @@ const DashboardLayout: FC = () => {
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
           <ul className="space-y-2 font-medium">
             {RoutesConfig.appRoutes.menuRoutes.map((route, index) => (
-              <li>
+              <li key={index}>
                 <Link
                   to={route.path ?? ''}
                   className={`flex items-center p-2 text-gray-900 rounded-lg ${

@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { HttpError, HttpRequestConfig } from './types';
+import { HttpResponseError, HttpRequestConfig } from './types';
 
 export const useRequest = <T>(requestBaseConfig?: HttpRequestConfig) => {
   const [data, setData] = useState<T>();
-  const [error, setError] = useState<HttpError>();
+  const [error, setError] = useState<HttpResponseError>();
   const [loading, setLoading] = useState(false);
 
   const post = async (url: string, body?: any, config?: HttpRequestConfig) => {
@@ -41,13 +41,11 @@ export const useRequest = <T>(requestBaseConfig?: HttpRequestConfig) => {
       const result = await request;
       setData(result.data);
       return result.data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setError({
-          message: error.message,
-          code: error.response?.status,
-        });
-      }
+    } catch (error: any) {
+      setError({
+        message: error.message,
+        code: error.response?.status,
+      });
     } finally {
       setLoading(false);
     }
