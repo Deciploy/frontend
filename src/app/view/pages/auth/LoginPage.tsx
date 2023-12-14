@@ -4,7 +4,6 @@ import { TextInput, Button, PasswordInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
 import { useRequest } from '@http-client';
 import { Formik } from 'formik';
-import { ErrorText } from '../../common/ErrorText';
 import { AuthUserData, NetworkResponse, User } from '../../../../data';
 import logo from 'src/assets/images/logo.png';
 import { useAuth } from 'react-auth-utils';
