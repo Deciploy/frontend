@@ -8,6 +8,7 @@ import { ErrorText } from '../../common/ErrorText';
 import { AuthUserData, NetworkResponse, User } from '../../../../data';
 import logo from 'src/assets/images/logo.png';
 import { useAuth } from 'react-auth-utils';
+import { AlertMessage } from '../../common/AlertMessage';
 
 interface LoginValues {
   email: string;
@@ -78,6 +79,8 @@ const LoginPage: FC = () => {
               touched,
             }) => (
               <div className="max-w-md w-full mx-auto space-y-5">
+                <AlertMessage message={error?.message} type="error" />
+
                 <TextInput
                   placeholder="User Name"
                   fullWidth
@@ -111,8 +114,6 @@ const LoginPage: FC = () => {
                     Forgot Password?
                   </Link>
                 </div>
-
-                <ErrorText error={error?.message} />
 
                 <br />
 
