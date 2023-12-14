@@ -1,10 +1,32 @@
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { httpClient } from '@http-client';
+import { AuthProvider } from 'react-auth-utils';
+import { AuthState } from 'react-auth-utils/src/lib/types';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import { RoutesConfig } from '../config';
+import AppLauncherProvider from './providers/AppLauncherProvider';
 
 export function App() {
   const router = createBrowserRouter(RoutesConfig.routes);
 
-  return <RouterProvider router={router} />;
+  const handleAuthStateChange = (state: AuthState | null) => {
+    if (state?.token) {
+      httpClient.interceptors.request.use((config) => {
+        if (!config.url?.includes('auth')) {
+          config.headers['Authorization'] = `Bearer ${state.token}`;
+        }
+        return config;
+      });
+    }
+  };
+
+  return (
+    <AppLauncherProvider>
+      <AuthProvider onAuthStateChange={handleAuthStateChange}>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </AppLauncherProvider>
+  );
 }
 
 export default App;
