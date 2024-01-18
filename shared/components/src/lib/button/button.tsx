@@ -1,5 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
 
+import { CircleSpinner } from '../spinner';
+
 export interface ButtonProps {
   /**
    * The variant of the button
@@ -67,55 +69,57 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       onClick={onClick && onClick}
       className={`${styles[variant][color]} ${sizes[size]} ${
         fullWidth ? 'w-full' : ''
-      } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      } flex justify-between items-center gap-2 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed`}
     >
-      {loading ? loadingText : children}
+      {loading ? (
+        <>
+          <CircleSpinner />
+          {loadingText}
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 };
 
 const sizes = {
-  sm: 'py-1 px-2 text-sm',
-  md: 'py-2 px-4 text-md',
-  lg: 'py-3 px-6 text-lg',
+  sm: 'h-8 px-3 text-sm',
+  md: 'h-10 px-4 text-md',
+  lg: 'h-12 px-6 text-lg',
 };
 
 const styles = {
   filled: {
-    primary: 'bg-primary hover:bg-primary-700 text-white font-bold rounded ',
-    secondary:
-      'bg-secondary hover:bg-secondary-700 text-black font-bold rounded',
-    warning: 'bg-warning hover:bg-warning-700 text-white font-bold rounded',
-    success: 'bg-success hover:bg-success-700 text-white font-bold rounded',
+    primary: 'bg-primary-500 hover:bg-primary-700 text-white rounded-lg',
+    secondary: 'bg-secondary-500 hover:bg-secondary-700 text-white rounded-lg',
+    warning: 'bg-warning-500 hover:bg-warning-700 text-white rounded-lg',
+    success: 'bg-success-500 hover:bg-success-700 text-white rounded-lg',
   },
   outlined: {
     primary:
-      'bg-transparent hover:bg-primary text-primary-700 font-semibold hover:text-white border border-primary hover:border-transparent rounded',
+      'bg-transparent hover:bg-primary-500 text-primary-700 hover:text-white border border-primary hover:border-transparent rounded-lg',
     secondary:
-      'bg-transparent hover:bg-secondary text-secondary-700 font-semibold hover:text-white  border border-secondary hover:border-transparent rounded',
+      'bg-transparent hover:bg-secondary-500 text-secondary-700  hover:text-white  border border-secondary hover:border-transparent rounded-lg',
     warning:
-      'bg-transparent hover:bg-warning text-warning-700 font-semibold hover:text-white border border-warning hover:border-transparent rounded',
+      'bg-transparent hover:bg-warning-500 text-warning-700  hover:text-white border border-warning hover:border-transparent rounded-lg',
     success:
-      'bg-transparent hover:bg-success text-success-700 font-semibold hover:text-white border border-success hover:border-transparent rounded',
+      'bg-transparent hover:bg-success-500 text-success-700 hover:text-white border border-success hover:border-transparent rounded-lg',
   },
   rounded: {
-    primary:
-      'bg-primary hover:bg-primary-700 text-white font-bold rounded-full ',
-    secondary:
-      'bg-secondary hover:bg-secondary-700 text-black font-bold rounded-full',
-    warning:
-      'bg-warning hover:bg-warning-700 text-white font-bold rounded-full',
-    success:
-      'bg-success hover:bg-success-700 text-white font-bold rounded-full',
+    primary: 'bg-primary hover:bg-primary-700 text-white rounded-full ',
+    secondary: 'bg-secondary hover:bg-secondary-700 text-black rounded-full',
+    warning: 'bg-warning hover:bg-warning-700 text-white rounded-full',
+    success: 'bg-success hover:bg-success-700 text-white rounded-full',
   },
   text: {
     primary:
-      'bg-transparent hover:bg-primary text-primary-700 font-semibold hover:text-white  border border-primary hover:border-transparent rounded',
+      'bg-transparent hover:bg-primary-500 text-primary-700  hover:text-white  border border-primary hover:border-transparent rounded-lg',
     secondary:
-      'bg-transparent hover:bg-secondary text-secondary-700 font-semibold hover:text-white  border border-secondary hover:border-transparent rounded',
+      'bg-transparent hover:bg-secondary-500 text-secondary-700 hover:text-white  border border-secondary hover:border-transparent rounded-lg',
     warning:
-      'bg-transparent hover:bg-warning text-warning-700 font-semibold hover:text-white  border border-warning hover:border-transparent rounded',
+      'bg-transparent hover:bg-warning-500 text-warning-700 hover:text-white  border border-warning hover:border-transparent rounded-lg',
     success:
-      'bg-transparent hover:bg-success text-success-700 font-semibold hover:text-white border border-success hover:border-transparent rounded',
+      'bg-transparent hover:bg-success-500 text-success-700 hover:text-white border border-success hover:border-transparent rounded-lg',
   },
 };
