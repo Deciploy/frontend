@@ -1,7 +1,8 @@
+import { AlertProvider } from '@components';
 import { httpClient } from '@http-client';
 import { AuthProvider } from 'react-auth-utils';
 import { AuthState } from 'react-auth-utils/src/lib/types';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
 import { RoutesConfig } from '../config';
 import AppLauncherProvider from './providers/AppLauncherProvider';
@@ -23,7 +24,9 @@ export function App() {
   return (
     <AppLauncherProvider>
       <AuthProvider onAuthStateChange={handleAuthStateChange}>
-        <RouterProvider router={router} />
+        <AlertProvider>
+          <RouterProvider router={router} />
+        </AlertProvider>
       </AuthProvider>
     </AppLauncherProvider>
   );

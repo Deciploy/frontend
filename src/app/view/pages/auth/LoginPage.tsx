@@ -60,9 +60,7 @@ const LoginPage: FC = () => {
             <img src={logo} className="h-10 mr-4" alt="App Logo" />
           </div>
           <div className="flex justify-center items-center">
-            <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-primary">
-              Login in to Deciploy
-            </h2>
+            <p className="text-5xl text-primary">Login in to Deciploy</p>
           </div>
 
           <Formik
@@ -83,7 +81,6 @@ const LoginPage: FC = () => {
 
                 <TextInput
                   placeholder="User Name"
-                  fullWidth
                   onChange={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
@@ -93,7 +90,6 @@ const LoginPage: FC = () => {
 
                 <PasswordInput
                   placeholder="Password"
-                  fullWidth
                   onChange={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
@@ -118,7 +114,6 @@ const LoginPage: FC = () => {
                 <br />
 
                 <Button
-                  variant="rounded"
                   fullWidth
                   disabled={loading}
                   onClick={handleSubmit}
