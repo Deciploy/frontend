@@ -83,7 +83,6 @@ const LoginPage: FC = () => {
 
                 <TextInput
                   placeholder="User Name"
-                  fullWidth
                   onChange={handleChange('email')}
                   onBlur={handleBlur('email')}
                   value={values.email}
@@ -93,7 +92,6 @@ const LoginPage: FC = () => {
 
                 <PasswordInput
                   placeholder="Password"
-                  fullWidth
                   onChange={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
