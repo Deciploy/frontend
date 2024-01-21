@@ -1,10 +1,18 @@
-import { FC, HTMLInputTypeAttribute, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
-export interface InputProps {
+interface SelectInputProps {
   /**
    * The value of the input
-   */
+   * */
   value?: string;
+
+  /**
+   * The options of the input
+   * */
+  options?: {
+    value: string;
+    label: string;
+  }[];
 
   /**
    * The label of the input
@@ -12,13 +20,23 @@ export interface InputProps {
   label?: string;
 
   /**
+   * The prefix of the input
+   * */
+  prefix?: ReactNode;
+
+  /**
+   * The suffix of the input
+   * */
+  suffix?: ReactNode;
+
+  /**
    * The placeholder of the input
-   */
+   * */
   placeholder?: string;
 
   /**
    * Class name of the input
-   */
+   * */
   className?: string;
 
   /**
@@ -33,43 +51,28 @@ export interface InputProps {
   message?: string;
 
   /**
-   * The prefix of the input
+   * If true, the input will be full width
+   * @default false
    * */
-  prefix?: ReactNode;
-
-  /**
-   * The suffix of the input
-   * */
-  suffix?: ReactNode;
-
-  /**
-   * The type of the input
-   * */
-  type?: HTMLInputTypeAttribute;
+  fullWidth?: boolean;
 
   /**
    * The onChange event handler
    * */
-  onChange?: (e: string) => void;
-
-  /**
-   * The onBlur event handler
-   * */
-  onBlur?: React.FocusEventHandler<HTMLInputElement> | undefined;
+  onChange?: (value: string) => void;
 }
 
-export const BaseInput: FC<InputProps> = ({
+export const SelectInput: FC<SelectInputProps> = ({
   value,
+  options = [],
   label,
   placeholder,
-  isError,
-  message,
-  type = 'text',
-  className,
-  onChange,
-  onBlur: handleBlur,
   prefix,
   suffix,
+  className,
+  isError,
+  message,
+  onChange,
 }) => {
   return (
     <div className="flex flex-col">
@@ -82,19 +85,23 @@ export const BaseInput: FC<InputProps> = ({
         }  rounded-md px-4 py-2 w-full bg-gray-200 shadow-md ${className}`}
       >
         {prefix && <div>{prefix}</div>}
-        <input
-          className={`outline-none bg-gray-200 w-full`}
+
+        <select
           value={value}
           placeholder={placeholder}
-          type={type}
-          onChange={(e) => onChange && onChange(e.target.value)}
-          onBlur={(e) => handleBlur && handleBlur(e)}
-        />
+          onChange={(e) => onChange?.(e.target.value)}
+          className={`outline-none bg-gray-200 w-full`}
+        >
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
         {suffix && <div>{suffix}</div>}
       </div>
-      {isError && (
-        <div className="text-warning-500 text-sm mt-1">{message}</div>
-      )}
+      {message && <p className="text-warning-500 text-sm mt-1">{message}</p>}
     </div>
   );
 };
