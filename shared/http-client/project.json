@@ -1,0 +1,29 @@
+{
+  "name": "http-client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "shared/http-client/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/shared/http-client",
+        "main": "shared/http-client/src/index.ts",
+        "tsConfig": "shared/http-client/tsconfig.lib.json",
+        "assets": ["shared/http-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "shared/http-client/**/*.ts",
+          "shared/http-client/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

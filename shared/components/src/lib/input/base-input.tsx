@@ -1,4 +1,4 @@
-import { FC, HTMLInputTypeAttribute } from 'react';
+import { FC, HTMLInputTypeAttribute, ReactNode } from 'react';
 
 export interface InputProps {
   /**
@@ -17,6 +17,11 @@ export interface InputProps {
   placeholder?: string;
 
   /**
+   * Class name of the input
+   */
+  className?: string;
+
+  /**
    * If true, the error style will be applied
    * @default false
    * */
@@ -28,20 +33,29 @@ export interface InputProps {
   message?: string;
 
   /**
+   * The prefix of the input
+   * */
+  prefix?: ReactNode;
+
+  /**
+   * The suffix of the input
+   * */
+  suffix?: ReactNode;
+
+  /**
    * The type of the input
    * */
   type?: HTMLInputTypeAttribute;
 
   /**
-   * If true, the input will be full width
-   * @default false
-   * */
-  fullWidth?: boolean;
-
-  /**
    * The onChange event handler
    * */
   onChange?: (e: string) => void;
+
+  /**
+   * The onBlur event handler
+   * */
+  onBlur?: React.FocusEventHandler<HTMLInputElement> | undefined;
 }
 
 export const BaseInput: FC<InputProps> = ({
@@ -51,28 +65,36 @@ export const BaseInput: FC<InputProps> = ({
   isError,
   message,
   type = 'text',
-  fullWidth = false,
+  className,
   onChange,
+  onBlur: handleBlur,
+  prefix,
+  suffix,
 }) => {
-  const borderStyle = isError
-    ? 'border-warning'
-    : ' focus:ring-primary-500 focus:border-primary-500';
-
   return (
-    <div className={fullWidth ? 'w-full' : ''}>
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        {label}
-      </label>
-
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange?.(e.target.value)}
-        className={`bg-secondary-200 border ${borderStyle} text-gray-900 text-sm rounded-full leading-tight focus:outline-none block w-full p-2.5`}
-        placeholder={placeholder}
-      />
-
-      {message && <p className="text-warning-500 text-sm mt-1">{message}</p>}
+    <div className="flex flex-col">
+      {label && <label className="text-sm">{label}</label>}
+      <div
+        className={`flex gap-2 items-center border ${
+          isError
+            ? 'border-warning'
+            : 'border-gray-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary'
+        }  rounded-md px-4 py-2 w-full bg-gray-200 shadow-md ${className}`}
+      >
+        {prefix && <div>{prefix}</div>}
+        <input
+          className={`outline-none bg-gray-200 w-full`}
+          value={value}
+          placeholder={placeholder}
+          type={type}
+          onChange={(e) => onChange && onChange(e.target.value)}
+          onBlur={(e) => handleBlur && handleBlur(e)}
+        />
+        {suffix && <div>{suffix}</div>}
+      </div>
+      {isError && (
+        <div className="text-warning-500 text-sm mt-1">{message}</div>
+      )}
     </div>
   );
 };
