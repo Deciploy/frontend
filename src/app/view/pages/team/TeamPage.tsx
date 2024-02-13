@@ -1,7 +1,9 @@
 import { FC, useRef } from 'react';
 import { Table, TableColumn, Button, TextInput, ModalHandler, Modal, useAlert } from '@components'
-
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { TeamSchema } from '@deciploy/constants';
 
 const columns: TableColumn[] = [
     { key: 'name', header: 'Name' },
@@ -18,9 +20,19 @@ const data = [
 
 ];
 
+interface TeamValues {
+    name: string;
+    description: string;
+}
+
 const TeamPage: FC = () => {
     const modalRef = useRef<ModalHandler>(null);
     const { showAlert } = useAlert();
+
+    const initialValues: TeamValues = {
+        name: '',
+        description: ''
+    };
 
     const askToDelete = () => {
         showAlert({
@@ -38,6 +50,10 @@ const TeamPage: FC = () => {
         modalRef.current?.open();
     };
 
+    const handleSubmit = (values: any) => {
+        console.log(values);
+    };
+
     return (
         <div>
             <h1 className="font-medium" >Team</h1>
@@ -52,20 +68,48 @@ const TeamPage: FC = () => {
             </div>
 
             <Modal ref={modalRef} title="Add New Team">
-                <div className="flex flex-col gap-4 ">
-                    <TextInput label="Name" />
-                    <TextInput label="Description" />
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={TeamSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({
+                        handleChange,
+                        handleBlur,
+                        handleSubmit,
+                        values,
+                        errors,
+                        touched,
+                    }) => (
+                        <div className="flex flex-col gap-4 ">
+                            <TextInput
+                                label="Name"
+                                onChange={handleChange('name')}
+                                onBlur={handleBlur('name')}
+                                value={values.name}
+                                isError={!!errors.name}
+                                message={errors.name} />
+                            <TextInput
+                                label="Description"
+                                onChange={handleChange('description')}
+                                onBlur={handleBlur('description')}
+                                value={values.description}
+                                isError={!!errors.description}
+                                message={errors.description}
+                            />
 
-                    <div className="flex justify-end gap-2">
-                        <Button
-                            variant="text"
-                            color="secondary"
-                        >
-                            Clear
-                        </Button>
-                        <Button color="primary">Save</Button>
-                    </div>
-                </div>
+                            <div className="flex justify-end gap-2">
+                                <Button
+                                    variant="text"
+                                    color="secondary"
+                                >
+                                    Clear
+                                </Button>
+                                <Button color="primary" onClick={handleSubmit}>Save</Button>
+                            </div>
+                        </div>
+                    )}
+                </Formik>
             </Modal>
         </div>
 
