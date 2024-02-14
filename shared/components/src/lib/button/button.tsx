@@ -67,9 +67,8 @@ export const Button: FC<PropsWithChildren<ButtonProps>> = ({
       type="button"
       disabled={disabled || loading}
       onClick={onClick && onClick}
-      className={`${styles[variant][color]} ${sizes[size]} ${
-        fullWidth ? 'w-full' : ''
-      } flex justify-center items-center gap-2 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed`}
+      className={`${styles[variant][color]} ${sizes[size]} ${fullWidth ? 'w-full' : ''
+        } flex justify-center items-center gap-2 disabled:opacity-50 disabled:pointer-events-none disabled:cursor-not-allowed`}
     >
       {loading ? (
         <>
