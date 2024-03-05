@@ -48,10 +48,10 @@ const DashboardLayout: FC = () => {
                     <div className="px-4 py-3">
                       <p className="text-sm text-gray-900">{user?.fullName}</p>
                       <p className="text-sm font-medium text-gray-500 truncate">
-                        {user?.team}
+                        {user?.team?.name}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
-                        {user?.company}
+                        {user?.company?.name}
                       </p>
                     </div>
                     <ul className="py-1">
