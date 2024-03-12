@@ -1,22 +1,22 @@
-import { AppRoute } from './interface';
-
-import LoginPage from '../../app/view/pages/auth/LoginPage';
-import HomePage from '../../app/view/pages/home/HomePage';
-import SamplePage from '../../app/view/pages/sample/SamplePage';
-import TeamPage from '../../app/view/pages/team/TeamPage';
-
-import { MdDashboard } from 'react-icons/md';
 import { AiFillEye } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
+import { FaChartLine } from 'react-icons/fa6';
+import { MdDashboard } from 'react-icons/md';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
-
+import LoginPage from '../../app/view/pages/auth/LoginPage';
+import HomePage from '../../app/view/pages/home/HomePage';
+import InsightsPage from '../../app/view/pages/home/InsightsPage';
+import SamplePage from '../../app/view/pages/sample/SamplePage';
+import TeamPage from '../../app/view/pages/team/TeamPage';
+import { AppRoute } from './interface';
 
 export const routeNames = {
   home: '/',
   login: '/login',
   sample: '/sample',
-  team: '/team'
+  team: '/team',
+  insights: '/insights',
 };
 
 export const appRoutes: AppRoute = {
@@ -26,6 +26,7 @@ export const appRoutes: AppRoute = {
       Component: LoginPage,
     },
   ],
+
   menuRoutes: [
     {
       index: true,
@@ -56,6 +57,16 @@ export const appRoutes: AppRoute = {
       ),
       title: 'Sample',
       Icon: AiFillEye,
+    },
+    {
+      path: routeNames.insights,
+      Component: () => (
+        <ProtectedRoute>
+          <InsightsPage />
+        </ProtectedRoute>
+      ),
+      title: 'Insights',
+      Icon: FaChartLine,
     },
   ],
 };
