@@ -11,16 +11,18 @@ import { User } from 'src/data';
 
 interface AuthContextValue {
   token: string | null;
-  setToken: (newToken: string, expiration?: number | Date, user?: User) => void;
+  login: (newToken: string, expiration?: number | Date, user?: User) => void;
+  logout: () => void;
   expiresAt: Date | null;
   userData: User | null;
 }
 
 const AuthContext = createContext<AuthContextValue>({
-  token: null,
-  setToken: () => {},
   expiresAt: null,
   userData: null,
+  token: null,
+  logout: () => {},
+  login: () => {},
 });
 
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -32,11 +34,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [userData, setUserData] = useState<User | null>(null);
 
   // Function to set the authentication token with optional expiration and user data
-  const setToken = (
-    newToken: string,
-    expiration?: number | Date,
-    user?: User
-  ) => {
+  const login = (newToken: string, expiration?: number | Date, user?: User) => {
     setToken_(newToken);
     if (expiration) {
       const expiresIn =
@@ -48,6 +46,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setExpiresAt(null);
     }
     setUserData(user ?? null);
+  };
+
+  const logout = () => {
+    setToken_(null);
+    setExpiresAt(null);
+    setUserData(null);
   };
 
   useEffect(() => {
@@ -69,9 +73,10 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const contextValue = useMemo(
     () => ({
       token,
-      setToken,
       expiresAt,
       userData,
+      login,
+      logout,
     }),
     [token, expiresAt, userData]
   );
@@ -83,5 +88,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
 };
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const authContext = useContext(AuthContext);
+  const isAuthenticated = !!authContext.token;
+  return { ...authContext, isAuthenticated };
 };

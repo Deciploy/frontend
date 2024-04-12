@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
-import { useAuth } from 'react-auth-utils';
 import { Link, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from 'src/app/providers';
 
 import logo from '../../../assets/images/logo.png';
 import { RoutesConfig } from '../../../config';
@@ -12,15 +12,15 @@ const DashboardLayout: FC = () => {
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
-  const { user, signOut } = useAuth<User>();
+  const { userData, logout } = useAuth();
 
   const currentPath = useMemo(() => {
-    const pathName = pathname.split('/').filter((item) => item !== '');
-    return pathName[0];
+    const paths = pathname.split('/').filter((item) => item !== '');
+    return paths[0];
   }, [pathname]);
 
   const handleLogout = () => {
-    signOut();
+    logout();
   };
 
   return (
@@ -37,7 +37,7 @@ const DashboardLayout: FC = () => {
               <div className="flex items-center ml-3">
                 <div>
                   <Avatar
-                    fullName={user?.fullName}
+                    fullName={userData?.fullName}
                     size={8}
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
                   />
@@ -46,12 +46,14 @@ const DashboardLayout: FC = () => {
                 {userMenuOpen && (
                   <div className="z-50 my-4 absolute right-1 top-10 block text-base list-none bg-white divide-y divide-gray-100 rounded shadow">
                     <div className="px-4 py-3">
-                      <p className="text-sm text-gray-900">{user?.fullName}</p>
+                      <p className="text-sm text-gray-900">
+                        {userData?.fullName}
+                      </p>
                       <p className="text-sm font-medium text-gray-500 truncate">
-                        {user?.team?.name}
+                        {userData?.team?.name}
                       </p>
                       <p className="text-sm text-gray-500 truncate">
-                        {user?.company?.name}
+                        {userData?.company?.name}
                       </p>
                     </div>
                     <ul className="py-1">

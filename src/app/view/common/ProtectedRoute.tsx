@@ -6,9 +6,9 @@ import { RoutesConfig } from '../../../config';
 
 export const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
   const location = useLocation();
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
 
-  return token ? (
+  return isAuthenticated ? (
     <>{children}</>
   ) : (
     <Navigate
