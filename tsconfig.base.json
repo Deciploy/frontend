@@ -16,8 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["shared/components/src/index.ts"],
-      "@deciploy/constants": ["shared/constants/src/index.ts"],
-      "@http-client": ["shared/http-client/src/index.ts"],
+      "@deciploy/constants": ["shared/constants/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

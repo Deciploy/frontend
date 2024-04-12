@@ -1,13 +1,13 @@
 import { Button, PasswordInput, TextInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
-import { useRequest } from '@http-client';
 import { Formik } from 'formik';
-import { FC } from 'react';
-import { useAuth } from 'react-auth-utils';
+import { FC, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from 'src/app/providers';
+import { usePost } from 'src/app/utils/hooks';
 import logo from 'src/assets/images/logo.png';
 
-import { AuthUserData, NetworkResponse, User } from '../../../../data';
+import { AuthUserData, NetworkResponse } from '../../../../data';
 import { AlertMessage } from '../../common/AlertMessage';
 
 interface LoginValues {
@@ -17,8 +17,9 @@ interface LoginValues {
 }
 
 const LoginPage: FC = () => {
-  const { loading, error, post } = useRequest<NetworkResponse<AuthUserData>>();
-  const { signIn } = useAuth<User>();
+  const { mutate, data, error, isPending } =
+    usePost<NetworkResponse<AuthUserData>>('auth/login');
+  const { setToken } = useAuth();
 
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -30,14 +31,17 @@ const LoginPage: FC = () => {
   };
 
   const handleSubmit = async (values: LoginValues) => {
-    const response = await post('auth/login', values);
+    mutate({ email: values.email, password: values.password });
+  };
 
-    if (response?.data) {
-      const { token, user } = response.data;
-      const expireAt = new Date(token.expiration).getTime();
-      signIn(token.token, expireAt, user, {
-        isRemembered: values.isRemember,
-      });
+  useEffect(() => {
+    if (data) {
+      const tokenData = data.data?.token;
+      const token = tokenData?.token!;
+      const user = data.data?.user;
+      const expireAt = new Date(tokenData?.expiration!).getTime();
+
+      setToken(token, expireAt, user);
 
       if (state && 'redirect' in state) {
         navigate(state.redirect);
@@ -45,7 +49,7 @@ const LoginPage: FC = () => {
         navigate('/');
       }
     }
-  };
+  }, [data]);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3">
@@ -115,9 +119,9 @@ const LoginPage: FC = () => {
 
                 <Button
                   fullWidth
-                  disabled={loading}
+                  disabled={isPending}
                   onClick={handleSubmit}
-                  loading={loading}
+                  loading={isPending}
                   loadingText="Logging in..."
                 >
                   LOGIN
