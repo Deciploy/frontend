@@ -1,7 +1,7 @@
 import { Button, PasswordInput, TextInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/app/providers';
 import { usePost } from 'src/app/utils/hooks';
@@ -17,10 +17,9 @@ interface LoginValues {
 }
 
 const LoginPage: FC = () => {
-  const { mutate, data, error, isPending } =
+  const { mutateAsync, error, isPending } =
     usePost<NetworkResponse<AuthUserData>>('auth/login');
-  const { setToken } = useAuth();
-
+  const { login } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -31,25 +30,23 @@ const LoginPage: FC = () => {
   };
 
   const handleSubmit = async (values: LoginValues) => {
-    mutate({ email: values.email, password: values.password });
-  };
+    mutateAsync({ email: values.email, password: values.password }).then(
+      (res) => {
+        const tokenData = res.data?.token;
+        const token = tokenData?.token!;
+        const user = res.data?.user;
+        const expireAt = new Date(tokenData?.expiration!).getTime();
 
-  useEffect(() => {
-    if (data) {
-      const tokenData = data.data?.token;
-      const token = tokenData?.token!;
-      const user = data.data?.user;
-      const expireAt = new Date(tokenData?.expiration!).getTime();
+        login(token, expireAt, user);
 
-      setToken(token, expireAt, user);
-
-      if (state && 'redirect' in state) {
-        navigate(state.redirect);
-      } else {
-        navigate('/');
+        if (state && 'redirect' in state) {
+          navigate(state.redirect);
+        } else {
+          navigate('/');
+        }
       }
-    }
-  }, [data]);
+    );
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3">
