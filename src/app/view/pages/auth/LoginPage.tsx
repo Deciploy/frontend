@@ -30,8 +30,8 @@ const LoginPage: FC = () => {
   };
 
   const handleSubmit = async (values: LoginValues) => {
-    mutateAsync({ email: values.email, password: values.password }).then(
-      (res) => {
+    mutateAsync({ email: values.email, password: values.password })
+      .then((res) => {
         const tokenData = res.data?.token;
         const token = tokenData?.token!;
         const user = res.data?.user;
@@ -44,8 +44,10 @@ const LoginPage: FC = () => {
         } else {
           navigate('/');
         }
-      }
-    );
+      })
+      .catch((e) => {
+        // Do nothing
+      });
   };
 
   return (

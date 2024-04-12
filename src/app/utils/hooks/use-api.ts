@@ -10,8 +10,10 @@ const getHeaders = (token?: string) => ({
 });
 
 const handleError = (error: any) => {
-  // Handle errors appropriately (e.g., display error message to user)
-  throw error;
+  if (error.response?.data?.message) {
+    throw new Error(error.response.data.message);
+  }
+  throw new Error(`An error occur: ${error.message}`);
 };
 
 const fetchData = async <TData = any, TBody = any>(url: string, token?: string, method: string = 'get', data?: TBody) => {

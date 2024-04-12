@@ -2,6 +2,8 @@ import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
 import { FC } from 'react';
+import { usePost } from 'src/app/utils/hooks';
+import { NetworkResponse } from 'src/data';
 
 interface TeamValues {
   name: string;
@@ -13,13 +15,21 @@ interface CreateTeamModalProps {
 }
 
 const CreateTeamModal: FC<CreateTeamModalProps> = ({ modalRef }) => {
+  const { mutateAsync, isPending } = usePost<NetworkResponse>('team');
+
   const initialValues: TeamValues = {
     name: '',
     description: '',
   };
 
   const handleSubmit = (values: TeamValues) => {
-    console.log(values);
+    mutateAsync(values)
+      .then((r) => {
+        modalRef.current?.close();
+      })
+      .catch((e) => {
+        // Do nothing
+      });
   };
 
   return (
@@ -59,7 +69,12 @@ const CreateTeamModal: FC<CreateTeamModalProps> = ({ modalRef }) => {
               <Button variant="text" color="secondary">
                 Clear
               </Button>
-              <Button color="primary" onClick={handleSubmit}>
+              <Button
+                color="primary"
+                onClick={handleSubmit}
+                loading={isPending}
+                loadingText="Saving..."
+              >
                 Save
               </Button>
             </div>

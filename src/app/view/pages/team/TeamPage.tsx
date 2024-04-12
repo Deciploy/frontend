@@ -9,7 +9,7 @@ import {
 import { FC, useRef } from 'react';
 import { FaMagnifyingGlass } from 'react-icons/fa6';
 import { useFetch } from 'src/app/utils/hooks';
-import { Team } from 'src/data';
+import { NetworkResponse, Team } from 'src/data';
 
 import CreateTeamModal from './CreateTeamModal';
 
@@ -21,7 +21,7 @@ const columns: TableColumn[] = [
 const TeamPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
   const { showAlert } = useAlert();
-  const { data, error } = useFetch<Team[]>('team');
+  const { data, error } = useFetch<NetworkResponse<Team[]>>('team');
 
   const askToDelete = () => {
     showAlert({
@@ -51,7 +51,7 @@ const TeamPage: FC = () => {
       <div className="mt-8">
         <Table
           columns={columns}
-          data={data ?? []}
+          data={data?.data ?? []}
           actions={[
             { name: 'Edit', color: 'secondary', onClick: () => openModal() },
             { name: 'Delete', color: 'warning', onClick: () => askToDelete() },
