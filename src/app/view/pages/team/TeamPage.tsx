@@ -18,8 +18,10 @@ const TeamPage: FC = () => {
   const filteredData = useMemo(() => {
     if (!query.length) return data?.data ?? [];
 
-    return (data?.data ?? []).filter((item) =>
-      item.name.toLowerCase().includes(query.toLowerCase())
+    return (data?.data ?? []).filter(
+      (item) =>
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        item.description.toLowerCase().includes(query.toLowerCase())
     );
   }, [data, query]);
 
