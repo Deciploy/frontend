@@ -1,18 +1,27 @@
 import { Button, ModalHandler, Table, TextInput, useAlert } from '@components';
-import { FC, useRef, useState } from 'react';
-import { FaMagnifyingGlass } from 'react-icons/fa6';
+import { FC, useMemo, useRef, useState } from 'react';
 import { useDelete, useFetch } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
 
+import { SearchInput } from '../../common/SearchInput';
 import CreateTeamModal from './CreateTeamModal';
 
 const TeamPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
   const { showAlert } = useAlert();
   const [selected, setSelected] = useState<Team | undefined>(undefined);
+  const [query, setQuery] = useState('');
   const { data, error, isLoading, refetch } =
     useFetch<NetworkResponse<Team[]>>('team');
   const { mutateAsync } = useDelete<NetworkResponse>(`team/${selected?.id}`);
+
+  const filteredData = useMemo(() => {
+    if (!query.length) return data?.data ?? [];
+
+    return (data?.data ?? []).filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    );
+  }, [data, query]);
 
   const openModal = () => {
     modalRef.current?.open();
@@ -48,7 +57,7 @@ const TeamPage: FC = () => {
       <h1 className="font-medium">Team</h1>
 
       <div className="flex flex-row w-full justify-between">
-        <TextInput prefix={<FaMagnifyingGlass />} placeholder="Search" />
+        <SearchInput onSearch={setQuery} />
         <Button onClick={onAdd}>Add New Team</Button>
       </div>
 
@@ -62,7 +71,7 @@ const TeamPage: FC = () => {
               <th>Description</th>
             </>
           }
-          data={data?.data ?? []}
+          data={filteredData}
           renderRow={(item) => (
             <>
               <td className="text-left">{item.name}</td>
