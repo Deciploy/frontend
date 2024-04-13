@@ -1,58 +1,57 @@
-import React, { FC, ReactNode } from 'react';
+import { FC, ReactNode } from 'react';
 
 import { Button } from '../button';
 
-export interface Action {
-  name: string;
-  color?: 'primary' | 'secondary' | 'warning' | 'success';
-  onClick: (item: Record<string, any>) => void;
+interface TableProps<TData> {
+  header?: ReactNode;
+  data: Array<TData>;
+  renderRow: (item: TData) => ReactNode;
+  onDelete?: (item: TData) => void;
+  onEdit?: (item: TData) => void;
 }
 
-export interface TableColumn {
-  key: string;
-  header: string;
-}
-
-export interface TableProps {
-  columns: TableColumn[];
-  data: Record<string, any>[];
-  actions?: Action[];
-}
-
-export const Table: FC<TableProps> = ({ columns, data, actions }) => {
-  console.log(data);
+export const Table = <TData extends object>({
+  header,
+  data,
+  renderRow,
+  onDelete,
+  onEdit,
+}: TableProps<TData>) => {
   return (
     <table className="min-w-full border border-gray-300 divide-y divide-gray-300">
       <thead>
-        <tr className="bg-primary text-white">
-          {columns.map((column) => (
-            <th key={column.key} className="py-2 px-4 border-r cursor-pointer">
-              {column.header}
-            </th>
-          ))}
-          <th className="py-2 px-4 border-r">Action</th>
+        <tr>
+          {header}
+          {(onEdit || onDelete) && <th style={{ width: '14%' }}>Action</th>}
         </tr>
       </thead>
       <tbody>
         {data.map((row, rowIndex) => (
           <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-gray-50' : ''}>
-            {columns.map((column) => (
-              <td key={column.key} className="py-2 px-4 border-r">
-                {row[column.key]}
-              </td>
-            ))}
-            <td className="flex justify-between py-2 px-4 w-41 border-r">
-              {actions &&
-                actions.map((action) => (
+            {renderRow(row)}
+
+            {(onEdit || onDelete) && (
+              <td className="flex justify-between py-2 px-4 border-r">
+                {onEdit && (
                   <Button
-                    key={action.name}
-                    color={action.color}
-                    onClick={() => action.onClick(row)}
+                    color="secondary"
+                    size="sm"
+                    onClick={() => onEdit(row)}
                   >
-                    {action.name}
+                    Edit
                   </Button>
-                ))}
-            </td>
+                )}
+                {onDelete && (
+                  <Button
+                    color="warning"
+                    size="sm"
+                    onClick={() => onDelete(row)}
+                  >
+                    Delete
+                  </Button>
+                )}
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
