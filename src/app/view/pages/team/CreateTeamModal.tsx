@@ -2,30 +2,35 @@ import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
 import { FC } from 'react';
-import { usePost } from 'src/app/utils/hooks';
-import { NetworkResponse } from 'src/data';
+import { usePatch, usePost } from 'src/app/utils/hooks';
+import { NetworkResponse, Team } from 'src/data';
 
 interface TeamValues {
   name: string;
   description: string;
 }
 
-interface CreateTeamModalProps {
+interface ModalProps {
   modalRef: React.RefObject<ModalHandler>;
+  selected?: Team;
+  refetch?: () => void;
 }
 
-const CreateTeamModal: FC<CreateTeamModalProps> = ({ modalRef }) => {
-  const { mutateAsync, isPending } = usePost<NetworkResponse>('team');
+const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
+  const { mutateAsync, isPending } = selected
+    ? usePatch(`team/${selected.id}`)
+    : usePost<NetworkResponse>('team');
 
   const initialValues: TeamValues = {
-    name: '',
-    description: '',
+    name: selected?.name ?? '',
+    description: selected?.description ?? '',
   };
 
   const handleSubmit = (values: TeamValues) => {
     mutateAsync(values)
       .then((r) => {
         modalRef.current?.close();
+        refetch && refetch();
       })
       .catch((e) => {
         // Do nothing
