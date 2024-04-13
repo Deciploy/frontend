@@ -9,12 +9,18 @@ import CreateTeamModal from './CreateTeamModal';
 
 const TeamPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
-  const { showAlert } = useAlert();
+
   const [selected, setSelected] = useState<Team | undefined>(undefined);
   const [query, setQuery] = useState('');
+
+  // Fetch teams request
   const { data, error, isLoading, refetch } =
     useFetch<NetworkResponse<Team[]>>('team');
+
+  // Delete team request
   const { mutateAsync } = useDelete<NetworkResponse>(`team/${selected?.id}`);
+
+  const { showAlert } = useAlert();
 
   const filteredData = useMemo(() => {
     if (!query.length) return data?.data ?? [];
@@ -64,42 +70,40 @@ const TeamPage: FC = () => {
   };
 
   return (
-    <div>
-      <h1 className="font-medium">Team</h1>
+    <>
+      <h1 className="text-2xl">Team</h1>
 
-      <div className="flex flex-row w-full justify-between">
+      <div className="flex flex-row w-full justify-between my-4">
         <SearchInput onSearch={setQuery} />
         <Button onClick={onAdd}>Add New Team</Button>
       </div>
 
-      <div className="mt-8">
-        <Table
-          loading={isLoading}
-          error={error?.message}
-          header={
-            <>
-              <th>Name</th>
-              <th>Description</th>
-            </>
-          }
-          data={filteredData}
-          renderRow={(item) => (
-            <>
-              <td className="text-left">{item.name}</td>
-              <td className="text-left">{item.description}</td>
-            </>
-          )}
-          onDelete={onDelete}
-          onEdit={onEdit}
-        />
-      </div>
+      <Table
+        loading={isLoading}
+        error={error?.message}
+        header={
+          <>
+            <th>Name</th>
+            <th>Description</th>
+          </>
+        }
+        data={filteredData}
+        renderRow={(item) => (
+          <>
+            <td className="text-left">{item.name}</td>
+            <td className="text-left">{item.description}</td>
+          </>
+        )}
+        onDelete={onDelete}
+        onEdit={onEdit}
+      />
 
       <CreateTeamModal
         modalRef={modalRef}
         selected={selected}
         refetch={refetch}
       />
-    </div>
+    </>
   );
 };
 
