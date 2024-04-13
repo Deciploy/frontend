@@ -1,9 +1,11 @@
 import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { usePatch, usePost } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
+
+import { AlertMessage } from '../../common/AlertMessage';
 
 interface TeamValues {
   name: string;
@@ -17,7 +19,7 @@ interface ModalProps {
 }
 
 const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
-  const { mutateAsync, isPending } = selected
+  const { mutateAsync, isPending, error } = selected
     ? usePatch(`team/${selected.id}`)
     : usePost<NetworkResponse>('team');
 
@@ -53,6 +55,7 @@ const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
           touched,
         }) => (
           <div className="flex flex-col gap-4 ">
+            <AlertMessage message={error?.message} type="error" />
             <TextInput
               label="Name"
               onChange={handleChange('name')}
@@ -71,8 +74,12 @@ const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
             />
 
             <div className="flex justify-end gap-2">
-              <Button variant="text" color="secondary">
-                Clear
+              <Button
+                variant="text"
+                color="secondary"
+                onClick={() => modalRef.current?.close()}
+              >
+                Cancel
               </Button>
               <Button
                 color="primary"
