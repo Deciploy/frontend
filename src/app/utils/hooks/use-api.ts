@@ -39,7 +39,7 @@ export const useApi = <TData = any>(url: string, method: string = 'get') => {
   const { token } = useAuth();
   return useQuery<TData, Error>({
     queryKey: [url],
-    queryFn: () => fetchData<TData>(url, token ?? undefined, method),
+    queryFn: () => fetchData<TData>(url, token!, method),
     // Optional configuration for caching, refetching, etc.
   })
 }
@@ -48,7 +48,7 @@ export const useApiMutation = <TData = any, TBody = any>(url: string, method: st
   const { token } = useAuth();
   return useMutation<TData, Error, TBody, unknown>({
     mutationKey: [url],
-    mutationFn: (body) => fetchData<TData>(url, token ?? undefined, method, body),
+    mutationFn: (body?) => fetchData<TData>(url, token!, method, body),
     // Optional configuration for caching, refetching, etc.
   })
 }
@@ -57,3 +57,4 @@ export const useFetch = <TData = any>(url: string) => useApi<TData>(url);
 export const usePost = <TData = any, TBody = any>(url: string) => useApiMutation<TData, TBody>(url, 'post');
 export const usePatch = <TData = any, TBody = any>(url: string) => useApiMutation<TData, TBody>(url, 'patch');
 export const usePut = <TData = any, TBody = any>(url: string) => useApiMutation<TData, TBody>(url, 'put');
+export const useDelete = <TData = any, TBody = any>(url: string) => useApiMutation<TData, TBody>(url, 'delete');
