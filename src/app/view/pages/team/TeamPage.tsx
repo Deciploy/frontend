@@ -10,7 +10,8 @@ const TeamPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
   const { showAlert } = useAlert();
   const [selected, setSelected] = useState<Team | undefined>(undefined);
-  const { data, error, refetch } = useFetch<NetworkResponse<Team[]>>('team');
+  const { data, error, isLoading, refetch } =
+    useFetch<NetworkResponse<Team[]>>('team');
   const { mutateAsync } = useDelete<NetworkResponse>(`team/${selected?.id}`);
 
   const openModal = () => {
@@ -53,6 +54,8 @@ const TeamPage: FC = () => {
 
       <div className="mt-8">
         <Table
+          loading={isLoading}
+          error={error?.message}
           header={
             <>
               <th>Name</th>
