@@ -1,5 +1,6 @@
 import { Button, ModalHandler, Table, TextInput, useAlert } from '@components';
 import { FC, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useDelete, useFetch } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
 
@@ -47,9 +48,17 @@ const TeamPage: FC = () => {
       type: 'confirmation',
       color: 'warning',
       handleConfirm: () => {
-        mutateAsync({})
-          .then(() => refetch())
+        const req = mutateAsync({})
+          .then(() => {
+            refetch();
+          })
           .catch(() => {});
+
+        toast.promise(req, {
+          pending: 'Deleting team...',
+          success: 'Team deleted successfully',
+          error: 'An error occurred while deleting the team',
+        });
       },
     });
   };

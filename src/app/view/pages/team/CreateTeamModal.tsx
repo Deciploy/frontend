@@ -2,6 +2,7 @@ import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
 import { FC, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { usePatch, usePost } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
 
@@ -33,6 +34,9 @@ const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
       .then((r) => {
         modalRef.current?.close();
         refetch && refetch();
+        toast.success(
+          selected ? 'Team updated successfully' : 'Team added successfully'
+        );
       })
       .catch((e) => {
         // Do nothing
@@ -40,7 +44,7 @@ const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
   };
 
   return (
-    <Modal ref={modalRef} title="Add New Team">
+    <Modal ref={modalRef} title={selected ? 'Edit team' : 'Add new team'}>
       <Formik
         initialValues={initialValues}
         validationSchema={TeamSchema}
