@@ -16,7 +16,8 @@ const DashboardLayout: FC = () => {
 
   const currentPath = useMemo(() => {
     const paths = pathname.split('/').filter((item) => item !== '');
-    return paths[0];
+    if (paths.length === 0) return undefined;
+    return '/' + paths[0];
   }, [pathname]);
 
   const handleLogout = () => {
