@@ -1,12 +1,12 @@
 import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
 import { Formik } from 'formik';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { toast } from 'react-toastify';
 import { usePatch, usePost } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
 
-import { AlertMessage } from '../../common/AlertMessage';
+import { AlertMessage } from '../../common';
 
 interface TeamValues {
   name: string;

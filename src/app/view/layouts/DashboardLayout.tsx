@@ -4,8 +4,7 @@ import { useAuth } from 'src/app/providers';
 
 import logo from '../../../assets/images/logo.png';
 import { RoutesConfig } from '../../../config';
-import { User } from '../../../data';
-import { Avatar } from '../common/Avatar';
+import { Avatar } from '../common';
 
 const DashboardLayout: FC = () => {
   const { pathname } = useLocation();

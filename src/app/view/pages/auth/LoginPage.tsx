@@ -8,7 +8,7 @@ import { usePost } from 'src/app/utils/hooks';
 import logo from 'src/assets/images/logo.png';
 
 import { AuthUserData, NetworkResponse } from '../../../../data';
-import { AlertMessage } from '../../common/AlertMessage';
+import { AlertMessage } from '../../common';
 
 interface LoginValues {
   email: string;

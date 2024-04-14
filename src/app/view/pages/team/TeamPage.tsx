@@ -1,10 +1,10 @@
-import { Button, ModalHandler, Table, TextInput, useAlert } from '@components';
+import { Button, ModalHandler, Table, useAlert } from '@components';
 import { FC, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDelete, useFetch } from 'src/app/utils/hooks';
 import { NetworkResponse, Team } from 'src/data';
 
-import { SearchInput } from '../../common/SearchInput';
+import { SearchInput } from '../../common';
 import CreateTeamModal from './CreateTeamModal';
 
 const TeamPage: FC = () => {
