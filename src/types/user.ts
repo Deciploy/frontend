@@ -1,5 +1,5 @@
-import { Company } from "./Company";
-import { Team } from "./Team";
+import { Company } from "./company";
+import { Team } from "./team";
 
 export interface User {
   id: string;
