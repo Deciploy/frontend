@@ -1,36 +1,30 @@
+import { useLogin } from '@api';
 import { Button, PasswordInput, TextInput } from '@components';
 import { LoginSchema } from '@deciploy/constants';
+import { LoginRequest } from '@types';
 import { Formik } from 'formik';
 import { FC } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/app/providers';
-import { usePost } from 'src/app/utils/hooks';
 import logo from 'src/assets/images/logo.png';
 
-import { AuthUserData, NetworkResponse } from '../../../../data';
 import { AlertMessage } from '../../common';
 
-interface LoginValues {
-  email: string;
-  password: string;
-  isRemember: boolean;
-}
-
 const LoginPage: FC = () => {
-  const { mutateAsync, error, isPending } =
-    usePost<NetworkResponse<AuthUserData>>('auth/login');
+  const { mutateAsync: doLogin, error, isPending } = useLogin();
+
   const { login } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const initialValues: LoginValues = {
+  const initialValues: LoginRequest = {
     email: '',
     password: '',
     isRemember: false,
   };
 
-  const handleSubmit = async (values: LoginValues) => {
-    mutateAsync({ email: values.email, password: values.password })
+  const handleSubmit = async (values: LoginRequest) => {
+    doLogin(values)
       .then((res) => {
         const tokenData = res.data?.token;
         const token = tokenData?.token!;
