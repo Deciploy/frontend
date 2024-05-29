@@ -30,7 +30,7 @@ export const Table = <TData extends object>({
         <thead>
           <tr>
             {header}
-            {(onEdit || onDelete) && <th style={{ width: '14%' }}>Action</th>}
+            {(onEdit || onDelete) && <th className="w-[10%]">Action</th>}
           </tr>
         </thead>
         <tbody>
