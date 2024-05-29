@@ -1,4 +1,3 @@
-import { error } from 'console';
 import { ReactNode } from 'react';
 import { RiErrorWarningLine } from 'react-icons/ri';
 
