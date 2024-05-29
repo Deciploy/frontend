@@ -1,8 +1,8 @@
+import { useTeamDelete, useTeamFetch } from '@api';
 import { Button, ModalHandler, Table, useAlert } from '@components';
+import { Team } from '@types';
 import { FC, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useDelete, useFetch } from 'src/app/utils/hooks';
-import { NetworkResponse, Team } from 'src/data';
 
 import { SearchInput } from '../../common';
 import CreateTeamModal from './CreateTeamModal';
@@ -14,11 +14,10 @@ const TeamPage: FC = () => {
   const [query, setQuery] = useState('');
 
   // Fetch teams request
-  const { data, error, isLoading, refetch } =
-    useFetch<NetworkResponse<Team[]>>('team');
+  const { data, error, isLoading, refetch } = useTeamFetch();
 
   // Delete team request
-  const { mutateAsync } = useDelete<NetworkResponse>(`team/${selected?.id}`);
+  const { mutateAsync: doDelete } = useTeamDelete(selected?.id ?? '');
 
   const { showAlert } = useAlert();
 
@@ -54,7 +53,7 @@ const TeamPage: FC = () => {
       type: 'confirmation',
       color: 'warning',
       handleConfirm: () => {
-        const req = mutateAsync({})
+        const req = doDelete({})
           .then(() => {
             refetch();
           })

@@ -1,17 +1,12 @@
+import { useTeamCreate, useTeamUpdate } from '@api';
 import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
+import { NetworkResponse, Team, TeamRequest } from '@types';
 import { Formik } from 'formik';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
-import { usePatch, usePost } from 'src/app/utils/hooks';
-import { NetworkResponse, Team } from 'src/data';
 
 import { AlertMessage } from '../../common';
-
-interface TeamValues {
-  name: string;
-  description: string;
-}
 
 interface ModalProps {
   modalRef: React.RefObject<ModalHandler>;
@@ -20,17 +15,19 @@ interface ModalProps {
 }
 
 const CreateTeamModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
-  const { mutateAsync, isPending, error } = selected
-    ? usePatch(`team/${selected.id}`)
-    : usePost<NetworkResponse>('team');
+  const {
+    mutateAsync: doSubmit,
+    isPending,
+    error,
+  } = selected ? useTeamUpdate(selected.id) : useTeamCreate();
 
-  const initialValues: TeamValues = {
+  const initialValues: TeamRequest = {
     name: selected?.name ?? '',
     description: selected?.description ?? '',
   };
 
-  const handleSubmit = (values: TeamValues) => {
-    mutateAsync(values)
+  const handleSubmit = (values: TeamRequest) => {
+    doSubmit(values)
       .then((r) => {
         modalRef.current?.close();
         refetch && refetch();
