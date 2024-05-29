@@ -30,8 +30,14 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [token, setToken_] = useState<string | null>(
     localStorage.getItem('token')
   );
-  const [expiresAt, setExpiresAt] = useState<Date | null>(null);
-  const [userData, setUserData] = useState<User | null>(null);
+  const [expiresAt, setExpiresAt] = useState<Date | null>(
+    localStorage.getItem('expiresAt')
+      ? new Date(localStorage.getItem('expiresAt')!!)
+      : null
+  );
+  const [userData, setUserData] = useState<User | null>(
+    JSON.parse(localStorage.getItem('userData') || 'null')
+  );
 
   // Function to set the authentication token with optional expiration and user data
   const login = (newToken: string, expiration?: number | Date, user?: User) => {
@@ -61,6 +67,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       delete axios.defaults.headers.common['Authorization'];
     }
     localStorage.setItem('token', token || '');
+    localStorage.setItem('expiresAt', expiresAt?.toISOString() || '');
+    localStorage.setItem('userData', JSON.stringify(userData) || '');
 
     // Check for expired token on mount and on token change
     const isExpired = expiresAt && expiresAt < new Date();
