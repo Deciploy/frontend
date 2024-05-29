@@ -1,3 +1,4 @@
+import { User } from '@types';
 import axios from 'axios';
 import {
   PropsWithChildren,
@@ -7,7 +8,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { User } from 'src/data';
 
 interface AuthContextValue {
   token: string | null;
