@@ -11,8 +11,8 @@ export const TeamSchema = Yup.object().shape({
 });
 
 export const UserSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
+  fullName: Yup.string().required('Full name is required'),
   email: Yup.string().email('Invalid email').required('The email is required'),
-  role: Yup.string().required('role is required'),
-  team: Yup.string().required('team is required'),
+  roles: Yup.array().min(1, 'Role is required'),
+  teamId: Yup.string().required('Team is required'),
 });
