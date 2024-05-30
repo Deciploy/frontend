@@ -1,7 +1,7 @@
 import { useTeamCreate, useTeamUpdate } from '@api';
 import { Button, Modal, ModalHandler, TextInput } from '@components';
 import { TeamSchema } from '@deciploy/constants';
-import { NetworkResponse, Team, TeamRequest } from '@types';
+import { Team, TeamRequest } from '@types';
 import { Formik } from 'formik';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
