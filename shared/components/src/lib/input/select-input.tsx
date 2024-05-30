@@ -3,7 +3,7 @@ import { FaAngleDown } from 'react-icons/fa6';
 
 import { SelectOption } from '../types';
 
-interface SelectInputProps {
+export interface SelectInputProps {
   /**
    * The value of the input
    * */
