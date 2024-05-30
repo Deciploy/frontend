@@ -1,19 +1,17 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa6';
 
 import { SelectOption } from '../types';
 
-export interface SelectInputProps {
+export interface MultiSelectInputProps {
   /**
    * The value of the input
    * */
-  value?: string;
-
+  value?: string[];
   /**
    * The options of the input
    * */
   options: SelectOption[];
-
   /**
    * The label of the input
    * */
@@ -54,29 +52,37 @@ export interface SelectInputProps {
   /**
    * The onChange event handler
    * */
-  onChange?: (value: string) => void;
+  onChange?: (values: Array<string>) => void;
 }
 
-export const SelectInput: FC<SelectInputProps> = ({
+export const MultiSelectInput: FC<MultiSelectInputProps> = ({
   value,
-  options = [],
+  options,
   label,
-  placeholder,
   prefix,
+  placeholder,
   className,
   isError,
   message,
+  fullWidth,
   onChange,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState<string | undefined>(value);
+  const [selected, setSelected] = useState<Array<string>>(value || []);
 
   const handleSelect = (option: SelectOption) => {
-    setSelected(option.value);
-    setIsOpen(false);
-
-    onChange && onChange(option.value);
+    if (selected.includes(option.value)) {
+      setSelected((prev) => prev.filter((item) => item !== option.value));
+    } else {
+      setSelected((prev) => [...prev, option.value]);
+    }
   };
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(selected);
+    }
+  }, [selected]);
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -92,9 +98,20 @@ export const SelectInput: FC<SelectInputProps> = ({
           onClick={() => setIsOpen(!isOpen)}
         >
           {prefix && <div>{prefix}</div>}
-          {selected
-            ? options.find((option) => option.value === selected)?.label
-            : placeholder || 'Select'}
+          {selected.length > 0 ? (
+            <div className="flex gap-1">
+              {selected.map((item) => (
+                <span
+                  key={item}
+                  className="bg-gray-200 rounded-md px-2 py-1 text-xs"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ) : (
+            placeholder || 'Select'
+          )}
           <FaAngleDown className="text-gray-500" />
         </button>
         {isOpen && (
@@ -103,9 +120,15 @@ export const SelectInput: FC<SelectInputProps> = ({
               {options.map((option) => (
                 <li
                   key={option.value}
-                  className="text-gray-700 cursor-pointer hover:bg-gray-100 px-3 py-2"
+                  className="flex gap-2 items-center text-gray-700 cursor-pointer hover:bg-gray-100 px-3 py-2"
                   onClick={() => handleSelect(option)}
                 >
+                  <input
+                    className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
+                    type="checkbox"
+                    readOnly
+                    checked={selected.includes(option.value)}
+                  />
                   {option.label}
                 </li>
               ))}

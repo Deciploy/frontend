@@ -1,23 +1,23 @@
-import { useTeamDelete, useTeamFetch } from '@api';
+import { useUserDelete, useUserFetch } from '@api';
 import { Button, ModalHandler, Table, useAlert } from '@components';
-import { Team } from '@types';
+import { User } from '@types';
 import { FC, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { SearchInput } from '../../common';
-import CreateTeamModal from './components/CreateTeamModal';
+import { SearchInput, UserRolesBadges } from '../../common';
+import UserCreateModal from './components/UserCreateModal';
 
-const TeamPage: FC = () => {
+const UserPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
 
-  const [selected, setSelected] = useState<Team | undefined>(undefined);
+  const [selected, setSelected] = useState<User | undefined>(undefined);
   const [query, setQuery] = useState('');
 
-  // Fetch teams request
-  const { data, error, isLoading, refetch } = useTeamFetch();
+  // Fetch all users request
+  const { data, error, isLoading, refetch } = useUserFetch();
 
-  // Delete team request
-  const { mutateAsync: doDelete } = useTeamDelete(selected?.id ?? '');
+  // Delete a user request
+  const { mutateAsync: doDelete } = useUserDelete(selected?.id ?? '');
 
   const { showAlert } = useAlert();
 
@@ -26,8 +26,8 @@ const TeamPage: FC = () => {
 
     return (data?.data ?? []).filter(
       (item) =>
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
+        item.fullName.toLowerCase().includes(query.toLowerCase()) ||
+        item.username.toLowerCase().includes(query.toLowerCase())
     );
   }, [data, query]);
 
@@ -40,16 +40,16 @@ const TeamPage: FC = () => {
     openModal();
   };
 
-  const onEdit = (item: Team) => {
+  const onEdit = (item: User) => {
     setSelected(item);
     openModal();
   };
 
-  const onDelete = (item: Team) => {
+  const onDelete = (item: User) => {
     setSelected(item);
     showAlert({
       title: 'Delete team',
-      message: 'Are you sure you want to delete this team?',
+      message: 'Are you sure you want to delete this user?',
       type: 'confirmation',
       color: 'warning',
       handleConfirm: () => {
@@ -60,9 +60,9 @@ const TeamPage: FC = () => {
           .catch(() => {});
 
         toast.promise(req, {
-          pending: 'Deleting team...',
-          success: 'Team deleted successfully',
-          error: 'An error occurred while deleting the team',
+          pending: 'Deleting user...',
+          success: 'User deleted successfully',
+          error: 'An error occurred while deleting the User',
         });
       },
     });
@@ -70,11 +70,11 @@ const TeamPage: FC = () => {
 
   return (
     <>
-      <h1 className="text-2xl">Team</h1>
+      <h1 className="text-2xl">User</h1>
 
       <div className="flex flex-row w-full justify-between my-4">
         <SearchInput onSearch={setQuery} />
-        <Button onClick={onAdd}>Add New Team</Button>
+        <Button onClick={onAdd}>Add New User</Button>
       </div>
 
       <Table
@@ -82,22 +82,28 @@ const TeamPage: FC = () => {
         error={error?.message}
         header={
           <>
-            <th>Name</th>
-            <th>Description</th>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Team</th>
+            <th>Roles</th>
           </>
         }
         data={filteredData}
         renderRow={(item) => (
           <>
-            <td className="text-left">{item.name}</td>
-            <td className="text-left">{item.description}</td>
+            <td className="text-left">{item.fullName}</td>
+            <td className="text-left">{item.username}</td>
+            <td className="text-left">{item.team?.name || 'N/A'}</td>
+            <td className="text-left">
+              <UserRolesBadges roles={item.roles} />
+            </td>
           </>
         )}
         onDelete={onDelete}
         onEdit={onEdit}
       />
 
-      <CreateTeamModal
+      <UserCreateModal
         modalRef={modalRef}
         selected={selected}
         refetch={refetch}
@@ -106,4 +112,4 @@ const TeamPage: FC = () => {
   );
 };
 
-export default TeamPage;
+export default UserPage;

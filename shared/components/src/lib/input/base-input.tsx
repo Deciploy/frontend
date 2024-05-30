@@ -72,18 +72,18 @@ export const BaseInput: FC<InputProps> = ({
   suffix,
 }) => {
   return (
-    <div className="flex flex-col">
+    <div className={`flex flex-col ${className}`}>
       {label && <label className="text-sm">{label}</label>}
       <div
-        className={`flex gap-2 items-center border ${
+        className={`focus:outline-none rounded-md border py-2 px-3 flex items-center justify-between w-full first-letter gap-2 ${
           isError
             ? 'border-warning'
-            : 'border-gray-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary'
-        }  rounded-md px-4 py-2 w-full bg-gray-200 shadow-md ${className}`}
+            : 'border-gray-300 focus-within:border-primary-300'
+        }`}
       >
         {prefix && <div>{prefix}</div>}
         <input
-          className={`outline-none bg-gray-200 w-full`}
+          className={`outline-none  w-full`}
           value={value}
           placeholder={placeholder}
           type={type}
