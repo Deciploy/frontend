@@ -6,6 +6,7 @@ import { MdDashboard } from 'react-icons/md';
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 import LoginPage from '../../app/view/pages/auth/LoginPage';
 import HomePage from '../../app/view/pages/home/HomePage';
+import ScreenshotsPage from '../../app/view/pages/screenshot/ScreenshotsPage';
 import TeamPage from '../../app/view/pages/team/TeamPage';
 import UserPage from '../../app/view/pages/user/UserPage';
 import { AppRoute } from './interface';
@@ -35,6 +36,13 @@ export const appRoutes: AppRoute = {
       ),
       title: 'Home',
       Icon: MdDashboard,
+    },
+
+    {
+      path: '/Screenshots',
+      Component: ScreenshotsPage,
+      title: 'Screenshots',
+      Icon: AiFillEye,
     },
     {
       path: routeNames.team,

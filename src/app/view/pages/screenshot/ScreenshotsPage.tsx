@@ -23,15 +23,15 @@ export default function ScreenshotPage() {
           </div>
           <div>
             <h1 className="font-bold">User</h1>
-            <SelectInput placeholder="Development" fullWidth />
+            <SelectInput placeholder="Development" fullWidth options={[]} />
           </div>
           <div>
             <h1 className="font-bold">From</h1>
-            <SelectInput placeholder="Development" fullWidth />
+            <SelectInput placeholder="Development" fullWidth options={[]} />
           </div>
           <div>
             <h1 className="font-bold">To</h1>
-            <SelectInput placeholder="Development" fullWidth />
+            <SelectInput placeholder="Development" fullWidth options={[]} />
           </div>
         </div>
 
