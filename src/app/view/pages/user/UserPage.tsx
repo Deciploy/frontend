@@ -1,136 +1,115 @@
-import { FC, useRef } from 'react';
-import { Table, TableColumn, Button, TextInput, ModalHandler, Modal, useAlert } from '@components'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { UserSchema } from '@deciploy/constants';
+import { useUserDelete, useUserFetch } from '@api';
+import { Button, ModalHandler, Table, useAlert } from '@components';
+import { User } from '@types';
+import { FC, useMemo, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 
-const columns: TableColumn[] = [
-    { key: 'name', header: 'Name' },
-    { key: 'email', header: 'Email' },
-    { key: 'role', header: 'Role' },
-    { key: 'team', header: 'Team' },
-];
-
-const data = [
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-    { name: 'Lorem Ipsum', email: 'Lorem@gmail.com', role: 'Manager', team: 'HR', },
-];
-
-interface UserValues {
-    name: string;
-    email: string;
-    role: string;
-    team: string;
-}
+import { SearchInput, UserRolesBadges } from '../../common';
+import UserCreateModal from './components/UserCreateModal';
 
 const UserPage: FC = () => {
-    const modalRef = useRef<ModalHandler>(null);
-    const { showAlert } = useAlert();
+  const modalRef = useRef<ModalHandler>(null);
 
-    const initialValues: UserValues = {
-        name: '',
-        email: '',
-        role: '',
-        team: ''
-    };
+  const [selected, setSelected] = useState<User | undefined>(undefined);
+  const [query, setQuery] = useState('');
 
-    const askToDelete = () => {
-        showAlert({
-            title: 'Are you sure?',
-            message: 'This action cannot be undone.',
-            type: 'confirmation',
-            color: 'warning',
-            handleConfirm: () => {
-                console.log('confirmed');
-            },
-        });
-    };
+  // Fetch all users request
+  const { data, error, isLoading, refetch } = useUserFetch();
 
-    const openModal = () => {
-        modalRef.current?.open();
-    };
+  // Delete a user request
+  const { mutateAsync: doDelete } = useUserDelete(selected?.id ?? '');
 
-    const handleSubmit = (values: any) => {
-        console.log(values);
-    };
+  const { showAlert } = useAlert();
 
-    return (
-        <div>
-            <h1 className="font-medium" >User</h1>
+  const filteredData = useMemo(() => {
+    if (!query.length) return data?.data ?? [];
 
-            <div className="flex flex-row w-full justify-between">
-                <TextInput prefix={<FaMagnifyingGlass />} placeholder='Search' />
-                <Button onClick={() => openModal()}>Add New User</Button>
-            </div>
-
-            <div className="mt-8">
-                <Table columns={columns} data={data} actions={[{ name: "Edit", color: "secondary", onClick: () => openModal() }, { name: "Delete", color: "warning", onClick: () => askToDelete() }]} />
-            </div>
-
-            <Modal ref={modalRef} title="Add New User">
-                <Formik
-                    initialValues={initialValues}
-                    validationSchema={UserSchema}
-                    onSubmit={handleSubmit}
-                >
-                    {({
-                        handleChange,
-                        handleBlur,
-                        handleSubmit,
-                        values,
-                        errors,
-                        touched,
-                    }) => (
-                        <div className="flex flex-col gap-4 ">
-                            <TextInput
-                                label="Name"
-                                onChange={handleChange('name')}
-                                onBlur={handleBlur('name')}
-                                value={values.name}
-                                isError={!!errors.name}
-                                message={errors.name} />
-                            <TextInput
-                                label="Email"
-                                onChange={handleChange('email')}
-                                onBlur={handleBlur('email')}
-                                value={values.email}
-                                isError={!!errors.email}
-                                message={errors.email} />
-                            <TextInput
-                                label="Role"
-                                onChange={handleChange('role')}
-                                onBlur={handleBlur('role')}
-                                value={values.role}
-                                isError={!!errors.role}
-                                message={errors.role} />
-                            <TextInput
-                                label="Team"
-                                onChange={handleChange('team')}
-                                onBlur={handleBlur('team')}
-                                value={values.team}
-                                isError={!!errors.team}
-                                message={errors.team} />
-
-                            <div className="flex justify-end gap-2">
-                                <Button
-                                    variant="text"
-                                    color="secondary"
-                                >
-                                    Clear
-                                </Button>
-                                <Button color="primary" onClick={handleSubmit}>Save</Button>
-                            </div>
-                        </div>
-                    )}
-                </Formik>
-            </Modal>
-        </div>
-
+    return (data?.data ?? []).filter(
+      (item) =>
+        item.fullName.toLowerCase().includes(query.toLowerCase()) ||
+        item.username.toLowerCase().includes(query.toLowerCase())
     );
+  }, [data, query]);
+
+  const openModal = () => {
+    modalRef.current?.open();
+  };
+
+  const onAdd = () => {
+    setSelected(undefined);
+    openModal();
+  };
+
+  const onEdit = (item: User) => {
+    setSelected(item);
+    openModal();
+  };
+
+  const onDelete = (item: User) => {
+    setSelected(item);
+    showAlert({
+      title: 'Delete team',
+      message: 'Are you sure you want to delete this user?',
+      type: 'confirmation',
+      color: 'warning',
+      handleConfirm: () => {
+        const req = doDelete({})
+          .then(() => {
+            refetch();
+          })
+          .catch(() => {});
+
+        toast.promise(req, {
+          pending: 'Deleting user...',
+          success: 'User deleted successfully',
+          error: 'An error occurred while deleting the User',
+        });
+      },
+    });
+  };
+
+  return (
+    <>
+      <h1 className="text-2xl">User</h1>
+
+      <div className="flex flex-row w-full justify-between my-4">
+        <SearchInput onSearch={setQuery} />
+        <Button onClick={onAdd}>Add New User</Button>
+      </div>
+
+      <Table
+        loading={isLoading}
+        error={error?.message}
+        header={
+          <>
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Team</th>
+            <th>Roles</th>
+          </>
+        }
+        data={filteredData}
+        renderRow={(item) => (
+          <>
+            <td className="text-left">{item.fullName}</td>
+            <td className="text-left">{item.username}</td>
+            <td className="text-left">{item.team?.name || 'N/A'}</td>
+            <td className="text-left">
+              <UserRolesBadges roles={item.roles} />
+            </td>
+          </>
+        )}
+        onDelete={onDelete}
+        onEdit={onEdit}
+      />
+
+      <UserCreateModal
+        modalRef={modalRef}
+        selected={selected}
+        refetch={refetch}
+      />
+    </>
+  );
 };
 
 export default UserPage;
