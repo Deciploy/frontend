@@ -32,7 +32,6 @@ const UserCreateModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
   };
 
   const handleSubmit = (values: UserRequest) => {
-    console.log(values);
     doSubmit(values)
       .then((r) => {
         modalRef.current?.close();
@@ -52,6 +51,7 @@ const UserCreateModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
         initialValues={initialValues}
         validationSchema={UserSchema}
         onSubmit={handleSubmit}
+        validateOnChange={false}
       >
         {({
           handleChange,
@@ -60,7 +60,6 @@ const UserCreateModal: FC<ModalProps> = ({ modalRef, selected, refetch }) => {
           setFieldValue,
           values,
           errors,
-          touched,
         }) => (
           <div className="flex flex-col gap-4 ">
             <AlertMessage message={error?.message} type="error" />
