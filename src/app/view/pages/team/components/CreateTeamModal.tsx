@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import { FC } from 'react';
 import { toast } from 'react-toastify';
 
-import { AlertMessage } from '../../common';
+import { AlertMessage } from '../../../common';
 
 interface ModalProps {
   modalRef: React.RefObject<ModalHandler>;

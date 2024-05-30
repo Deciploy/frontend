@@ -5,7 +5,7 @@ import { FC, useMemo, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import { SearchInput } from '../../common';
-import CreateTeamModal from './CreateTeamModal';
+import CreateTeamModal from './components/CreateTeamModal';
 
 const TeamPage: FC = () => {
   const modalRef = useRef<ModalHandler>(null);
