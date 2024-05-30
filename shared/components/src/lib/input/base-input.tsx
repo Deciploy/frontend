@@ -75,7 +75,7 @@ export const BaseInput: FC<InputProps> = ({
     <div className={`flex flex-col ${className}`}>
       {label && <label className="text-sm">{label}</label>}
       <div
-        className={`focus:outline-none rounded-md border py-2 px-3 flex items-center justify-between w-full first-letter first-letter first-letter ${
+        className={`focus:outline-none rounded-md border py-2 px-3 flex items-center justify-between w-full first-letter gap-2 ${
           isError
             ? 'border-warning'
             : 'border-gray-300 focus-within:border-primary-300'
