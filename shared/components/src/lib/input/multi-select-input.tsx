@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { FaAngleDown } from 'react-icons/fa6';
 
 import { SelectOption } from '../types';
@@ -72,13 +72,17 @@ export const MultiSelectInput: FC<MultiSelectInputProps> = ({
 
   const handleSelect = (option: SelectOption) => {
     if (selected.includes(option.value)) {
-      setSelected(selected.filter((item) => item !== option.value));
+      setSelected((prev) => prev.filter((item) => item !== option.value));
     } else {
-      setSelected([...selected, option.value]);
+      setSelected((prev) => [...prev, option.value]);
     }
-
-    onChange && onChange(selected);
   };
+
+  useEffect(() => {
+    if (onChange) {
+      onChange(selected);
+    }
+  }, [selected]);
 
   return (
     <div className={`flex flex-col ${className}`}>
@@ -122,6 +126,7 @@ export const MultiSelectInput: FC<MultiSelectInputProps> = ({
                   <input
                     className="w-4 h-4 bg-gray-100 border-gray-300 rounded"
                     type="checkbox"
+                    readOnly
                     checked={selected.includes(option.value)}
                   />
                   {option.label}
