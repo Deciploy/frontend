@@ -93,7 +93,9 @@ export const SelectInput: FC<SelectInputProps> = ({
         >
           {prefix && <div>{prefix}</div>}
           {selected
-            ? options.find((option) => option.value === selected)?.label
+            ? options.find((option) => option.value === selected)?.label ||
+              placeholder ||
+              'Select'
             : placeholder || 'Select'}
           <FaAngleDown className="text-gray-500" />
         </button>
