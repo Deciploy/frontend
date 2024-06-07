@@ -1,13 +1,7 @@
 import { useScreenshotFetch } from '@api';
-import {
-  Button,
-  CircleSpinner,
-  DateTimeInput,
-  SelectInput,
-  TextInput,
-} from '@components';
+import { Button, CircleSpinner, DateTimeInput } from '@components';
 import { Screenshot } from '@types';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RiErrorWarningLine } from 'react-icons/ri';
 import Moment from 'react-moment';
 
@@ -17,10 +11,22 @@ import ScreenshotItem from './components/ScreenshotItem';
 export default function ScreenshotPage() {
   const [teamId, setTeamId] = useState<string | undefined>(undefined);
   const [userId, setUserId] = useState<string | undefined>(undefined);
+  const [from, setFrom] = useState<string | undefined>(undefined);
+  const [to, setTo] = useState<string | undefined>(undefined);
   const [selectedScreenshot, setSelectedScreenshot] =
     useState<Screenshot | null>(null);
 
-  const { isLoading, data: response, refetch } = useScreenshotFetch(userId);
+  const url = useMemo(() => {
+    let url = `${userId}`;
+
+    const params = new URLSearchParams();
+    if (from) params.append('from', new Date(from).toString());
+    if (to) params.append('to', new Date(to).toString());
+
+    return url + '?' + params.toString();
+  }, [teamId, userId, from, to]);
+
+  const { isLoading, data: response } = useScreenshotFetch(url);
 
   useEffect(() => {
     if (response?.data?.length) {
@@ -42,6 +48,7 @@ export default function ScreenshotPage() {
         <UserSelector
           className="w-1/4"
           placeholder="User"
+          teamId={teamId}
           onChange={setUserId}
         />
 
@@ -49,14 +56,14 @@ export default function ScreenshotPage() {
           className="w-1/4"
           placeholder="From"
           datetimeType="datetime-local"
-          onChange={(value) => console.log(value)}
+          onChange={setFrom}
         />
 
         <DateTimeInput
           className="w-1/4"
           placeholder="From"
           datetimeType="datetime-local"
-          onChange={(value) => console.log(value)}
+          onChange={setTo}
         />
       </div>
       {isLoading && (
