@@ -1,4 +1,4 @@
-import { useUserFetch } from '@api';
+import { useUserFetch, useUserFetchByTeam } from '@api';
 import { SelectInput, SelectInputProps } from '@components';
 import { FC } from 'react';
 
@@ -8,7 +8,9 @@ interface UserSelectorProps extends Omit<SelectInputProps, 'options'> {
 
 export const UserSelector: FC<UserSelectorProps> = (props) => {
   // Fetch users request
-  const { data } = useUserFetch();
+  const { data } = props.teamId
+    ? useUserFetchByTeam(props.teamId)
+    : useUserFetch();
 
   return (
     <SelectInput
