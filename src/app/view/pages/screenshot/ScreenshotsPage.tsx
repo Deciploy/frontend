@@ -48,12 +48,14 @@ export default function ScreenshotPage() {
         <DateTimeInput
           className="w-1/4"
           placeholder="From"
+          datetimeType="datetime-local"
           onChange={(value) => console.log(value)}
         />
 
         <DateTimeInput
           className="w-1/4"
           placeholder="From"
+          datetimeType="datetime-local"
           onChange={(value) => console.log(value)}
         />
       </div>
