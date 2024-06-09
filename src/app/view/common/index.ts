@@ -6,3 +6,4 @@ export { ErrorText } from './ErrorText';
 export { UserRolesBadges } from './UserRolesBadges';
 export { UserRolesSelector } from './UserRolesSelector';
 export { TeamSelector } from './TeamSelector';
+export { UserSelector } from './UserSelector';
