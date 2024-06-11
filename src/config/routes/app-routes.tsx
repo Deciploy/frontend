@@ -1,10 +1,11 @@
 import { AiFillEye } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
-import { MdDashboard } from 'react-icons/md';
+import { MdDashboard, MdHome } from 'react-icons/md';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 import LoginPage from '../../app/view/pages/auth/LoginPage';
+import DashboardPage from '../../app/view/pages/dashboard/DashboardPage';
 import HomePage from '../../app/view/pages/home/HomePage';
 import ScreenshotsPage from '../../app/view/pages/screenshot/ScreenshotsPage';
 import TeamPage from '../../app/view/pages/team/TeamPage';
@@ -35,9 +36,14 @@ export const appRoutes: AppRoute = {
         </ProtectedRoute>
       ),
       title: 'Home',
+      Icon: MdHome,
+    },
+    {
+      path: '/Dashboard',
+      Component: DashboardPage,
+      title: 'Dashboard',
       Icon: MdDashboard,
     },
-
     {
       path: '/Screenshots',
       Component: ScreenshotsPage,
