@@ -1,11 +1,13 @@
 import { AiFillEye } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
+import { FaChartSimple } from 'react-icons/fa6';
 import { MdDashboard } from 'react-icons/md';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 import LoginPage from '../../app/view/pages/auth/LoginPage';
 import HomePage from '../../app/view/pages/home/HomePage';
+import InsightsPage from '../../app/view/pages/insights/InsightsPage';
 import ScreenshotsPage from '../../app/view/pages/screenshot/ScreenshotsPage';
 import TeamPage from '../../app/view/pages/team/TeamPage';
 import UserPage from '../../app/view/pages/user/UserPage';
@@ -14,9 +16,10 @@ import { AppRoute } from './interface';
 export const routeNames = {
   home: '/',
   login: '/login',
-  sample: '/sample',
   team: '/team',
   user: '/user',
+  screenshots: '/screenshots',
+  insights: '/insights',
 };
 
 export const appRoutes: AppRoute = {
@@ -37,12 +40,25 @@ export const appRoutes: AppRoute = {
       title: 'Home',
       Icon: MdDashboard,
     },
-
     {
-      path: '/Screenshots',
-      Component: ScreenshotsPage,
+      path: routeNames.insights,
+      title: 'Insights',
+      Icon: FaChartSimple,
+      Component: () => (
+        <ProtectedRoute>
+          <InsightsPage />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: routeNames.screenshots,
       title: 'Screenshots',
       Icon: AiFillEye,
+      Component: () => (
+        <ProtectedRoute>
+          <ScreenshotsPage />
+        </ProtectedRoute>
+      ),
     },
     {
       path: routeNames.team,
