@@ -19,6 +19,7 @@
       "@deciploy/constants": ["shared/constants/src/index.ts"],
       "@types": ["src/types/index.ts"],
       "@api": ["src/api/index.ts"],
+      "@hooks": ["src/app/utils/hooks/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
