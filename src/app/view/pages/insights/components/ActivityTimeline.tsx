@@ -39,7 +39,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ activities }) => {
         width={'100%'}
         height={'80vh'}
         chartType="Timeline"
-        loader={<div>Loading Chart</div>}
+        loader={<div>Loading....</div>}
         data={data}
         options={{
           colors: activities?.map((activity) => activity.application.theme),
