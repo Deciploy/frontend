@@ -1,32 +1,21 @@
 import { useScreenshotFetch } from '@api';
-import { Button, CircleSpinner, DateTimeInput } from '@components';
+import { Button, DateTimeInput } from '@components';
+import { useParamsQuery } from '@hooks';
 import { Screenshot } from '@types';
-import { useEffect, useMemo, useState } from 'react';
-import { RiErrorWarningLine } from 'react-icons/ri';
+import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 
 import { TeamSelector, UserSelector } from '../../common';
+import DataRendingView from '../../common/DataRenderingView';
 import ScreenshotItem from './components/ScreenshotItem';
 
 export default function ScreenshotPage() {
-  const [teamId, setTeamId] = useState<string | undefined>(undefined);
-  const [userId, setUserId] = useState<string | undefined>(undefined);
-  const [from, setFrom] = useState<string | undefined>(undefined);
-  const [to, setTo] = useState<string | undefined>(undefined);
+  const { setParams, getParams, query } = useParamsQuery();
+
   const [selectedScreenshot, setSelectedScreenshot] =
     useState<Screenshot | null>(null);
 
-  const url = useMemo(() => {
-    let url = `${userId}`;
-
-    const params = new URLSearchParams();
-    if (from) params.append('from', new Date(from).toString());
-    if (to) params.append('to', new Date(to).toString());
-
-    return url + '?' + params.toString();
-  }, [teamId, userId, from, to]);
-
-  const { isLoading, data: response } = useScreenshotFetch(url);
+  const { isLoading, data: response, error } = useScreenshotFetch(query);
 
   useEffect(() => {
     if (response?.data?.length) {
@@ -40,40 +29,42 @@ export default function ScreenshotPage() {
 
       <div className="flex gap-3 w-3/4">
         <TeamSelector
+          value={getParams('team')}
           className="w-1/4"
           placeholder="Team"
-          onChange={setTeamId}
+          onChange={(value) => setParams('team', value)}
         />
 
         <UserSelector
+          value={getParams('user')}
           className="w-1/4"
           placeholder="User"
-          teamId={teamId}
-          onChange={setUserId}
+          teamId={getParams('team')}
+          onChange={(value) => setParams('user', value)}
         />
 
         <DateTimeInput
+          value={getParams('from')}
           className="w-1/4"
           placeholder="From"
           datetimeType="datetime-local"
-          onChange={setFrom}
+          onChange={(value) => setParams('from', value)}
         />
 
         <DateTimeInput
+          value={getParams('to')}
           className="w-1/4"
           placeholder="From"
           datetimeType="datetime-local"
-          onChange={setTo}
+          onChange={(value) => setParams('to', value)}
         />
       </div>
-      {isLoading && (
-        <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
-          <CircleSpinner size={48} circleClassName="text-primary" />
-        </div>
-      )}
 
-      {!isLoading &&
-        (response?.data?.length !== 0 ? (
+      <DataRendingView
+        loading={isLoading}
+        error={error?.message}
+        data={response}
+        render={(response) => (
           <div className="flex">
             <div className="w-full md:w-3/5 p-4 ">
               <div className="text-xl  mb-4">
@@ -107,14 +98,8 @@ export default function ScreenshotPage() {
               ))}
             </div>
           </div>
-        ) : (
-          <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
-            <RiErrorWarningLine size={48} className="text-gray-500" />
-            <p className="mt-4 text-center text-gray-500">
-              No screenshots found
-            </p>
-          </div>
-        ))}
+        )}
+      />
     </div>
   );
 }
