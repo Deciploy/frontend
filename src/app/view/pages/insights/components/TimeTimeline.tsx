@@ -1,4 +1,4 @@
-import { Activity, Time } from '@types';
+import { Time } from '@types';
 import { Chart } from 'react-google-charts';
 
 interface ActivityTimelineProps {
