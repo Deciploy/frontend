@@ -1,16 +1,6 @@
-import { useTrackingDataFetch } from '@api';
-import { DateTimeInput, TabView } from '@components';
-import { useParamsQuery } from '@hooks';
+import { TabView } from '@components';
 import { FC } from 'react';
 
-import {
-  ApplicationSelector,
-  ApplicationTypeSelector,
-  TeamSelector,
-  UserSelector,
-} from '../../common';
-import DataRendingView from '../../common/DataRenderingView';
-import ActivityTimeline from './components/ActivityTimeline';
 import ActivityTrack from './components/ActivityTrack';
 import TimeTrack from './components/TimeTrack';
 
