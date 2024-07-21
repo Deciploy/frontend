@@ -23,3 +23,9 @@ export interface Activity {
     syncTime: string;
     user: User;
 }
+
+export interface Time {
+    clockIn: string;
+    clockOut?: string;
+    user: User;
+}
