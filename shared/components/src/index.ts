@@ -5,3 +5,4 @@ export * from './lib/modal';
 export * from './lib/spinner';
 export * from './lib/alert';
 export * from './lib/table';
+export * from './lib/tab';
