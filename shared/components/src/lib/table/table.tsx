@@ -43,7 +43,7 @@ export const Table = <TData extends object>({
                 {renderRow(row)}
 
                 {(onEdit || onDelete) && (
-                  <td className="flex justify-between py-2 px-4 border-r">
+                  <td className="flex justify-between py-2 px-4 border-r space-x-4">
                     {onEdit && (
                       <Button
                         color="secondary"
