@@ -1,4 +1,4 @@
-import { AiFillEye } from 'react-icons/ai';
+import { AiFillEye, AiOutlineFundProjectionScreen } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
 import { FaChartSimple, FaRightLeft } from 'react-icons/fa6';
@@ -64,7 +64,7 @@ export const appRoutes: AppRoute = {
     },
     {
       title: 'Decisions',
-      Icon: FaRightLeft,
+      Icon: AiOutlineFundProjectionScreen,
       children: [
         {
           title: 'Work Time',
