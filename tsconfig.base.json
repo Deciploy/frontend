@@ -20,6 +20,7 @@
       "@types": ["src/types/index.ts"],
       "@api": ["src/api/index.ts"],
       "@hooks": ["src/app/utils/hooks/index.ts"],
+      "@helpers": ["src/app/utils/helpers/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
