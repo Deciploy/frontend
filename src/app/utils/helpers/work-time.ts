@@ -13,6 +13,8 @@ export const getEmployeeWorkStatus = (averageWorkTime: number) => {
     return 'Overtime';
   } else if (averageWorkTime === 8) {
     return 'Regular';
+  } else if (averageWorkTime === 0) {
+    return 'Zero';
   } else {
     return 'Underwork';
   }
