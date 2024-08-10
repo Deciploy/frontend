@@ -28,7 +28,7 @@ const ActivityTimeline: React.FC<ActivityTimelineProps> = ({ activities }) => {
 
     ...(activities?.map((activity) => [
       activity.user.fullName,
-      activity.application.name,
+      activity.title,
       new Date(activity.startTime),
       new Date(activity.endTime),
     ]) as any[]),

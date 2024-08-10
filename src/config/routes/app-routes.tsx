@@ -1,11 +1,12 @@
-import { AiFillEye } from 'react-icons/ai';
+import { AiFillEye, AiOutlineFundProjectionScreen } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
-import { FaChartSimple } from 'react-icons/fa6';
+import { FaChartSimple, FaRightLeft } from 'react-icons/fa6';
 import { MdDashboard } from 'react-icons/md';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 import LoginPage from '../../app/view/pages/auth/LoginPage';
+import WorkTimePage from '../../app/view/pages/decision-support/work-time/WorkTimePage';
 import HomePage from '../../app/view/pages/home/HomePage';
 import InsightsPage from '../../app/view/pages/insights/InsightsPage';
 import ScreenshotsPage from '../../app/view/pages/screenshot/ScreenshotsPage';
@@ -20,6 +21,7 @@ export const routeNames = {
   user: '/user',
   screenshots: '/screenshots',
   insights: '/insights',
+  workTime: '/work-time',
 };
 
 export const appRoutes: AppRoute = {
@@ -59,6 +61,21 @@ export const appRoutes: AppRoute = {
           <ScreenshotsPage />
         </ProtectedRoute>
       ),
+    },
+    {
+      title: 'Decisions',
+      Icon: AiOutlineFundProjectionScreen,
+      children: [
+        {
+          title: 'Work Time',
+          path: routeNames.workTime,
+          Component: () => (
+            <ProtectedRoute>
+              <WorkTimePage />
+            </ProtectedRoute>
+          ),
+        },
+      ],
     },
     {
       path: routeNames.team,

@@ -1,4 +1,8 @@
 import { FC, useMemo, useState } from 'react';
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
+} from 'react-icons/md';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from 'src/app/providers';
 
@@ -10,6 +14,7 @@ const DashboardLayout: FC = () => {
   const { pathname } = useLocation();
 
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [expandedIndex, setExpandedIndex] = useState<Array<number>>([]);
 
   const { userData, logout } = useAuth();
 
@@ -21,6 +26,18 @@ const DashboardLayout: FC = () => {
 
   const handleLogout = () => {
     logout();
+  };
+
+  const toggleExpand = (index: number) => {
+    if (expandedIndex.includes(index)) {
+      setExpandedIndex(expandedIndex.filter((i) => i !== index));
+    } else {
+      setExpandedIndex([...expandedIndex, index]);
+    }
+  };
+
+  const isExpanded = (index: number) => {
+    return expandedIndex.includes(index);
   };
 
   return (
@@ -99,24 +116,69 @@ const DashboardLayout: FC = () => {
       >
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white">
           <ul className="space-y-2 font-medium">
-            {RoutesConfig.appRoutes.menuRoutes.map((route, index) => (
-              <li key={index}>
-                <Link
-                  to={route.path ?? ''}
-                  className={`flex items-center p-2 text-gray-900 rounded-lg ${
-                    currentPath === route.path
-                      ? 'bg-primary-100'
-                      : 'hover:bg-gray-100'
-                  } group`}
-                >
-                  {route.Icon && (
-                    <route.Icon className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
-                  )}
+            {RoutesConfig.appRoutes.menuRoutes.map((route, index) =>
+              route.children ? (
+                <li key={index}>
+                  <div className="flex items-center justify-between p-2 text-gray-900 rounded-lg group">
+                    {route.Icon && (
+                      <route.Icon className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                    )}
 
-                  <span className="ml-3">{route.title}</span>
-                </Link>
-              </li>
-            ))}
+                    <span className="ml-3">{route.title}</span>
+                    <button
+                      onClick={() => toggleExpand(index)}
+                      className="ml-auto"
+                    >
+                      {isExpanded(index) ? (
+                        <MdOutlineKeyboardArrowUp className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                      ) : (
+                        <MdOutlineKeyboardArrowDown className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                      )}
+                    </button>
+                  </div>
+
+                  {isExpanded(index) && (
+                    <ul className="pl-4 space-y-2">
+                      {route.children.map((child, i) => (
+                        <li key={i}>
+                          <Link
+                            to={child.path ?? ''}
+                            className={`flex items-center p-2 text-gray-900 rounded-lg ${
+                              currentPath === child.path
+                                ? 'bg-primary-100'
+                                : 'hover:bg-gray-100'
+                            } group`}
+                          >
+                            {child.Icon && (
+                              <child.Icon className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                            )}
+
+                            <span className="ml-3">{child.title}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ) : (
+                <li key={index}>
+                  <Link
+                    to={route.path ?? ''}
+                    className={`flex items-center p-2 text-gray-900 rounded-lg ${
+                      currentPath === route.path
+                        ? 'bg-primary-100'
+                        : 'hover:bg-gray-100'
+                    } group`}
+                  >
+                    {route.Icon && (
+                      <route.Icon className="w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+                    )}
+
+                    <span className="ml-3">{route.title}</span>
+                  </Link>
+                </li>
+              )
+            )}
           </ul>
         </div>
       </aside>
