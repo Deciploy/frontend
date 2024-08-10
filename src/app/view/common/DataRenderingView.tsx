@@ -19,9 +19,11 @@ const DataRendingView = <T extends object>({
   emptyMessage,
 }: DataRendingViewProps<T>) => {
   if (loading) {
-    <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
-      <CircleSpinner size={48} circleClassName="text-primary" />
-    </div>;
+    return (
+      <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
+        <CircleSpinner size={48} circleClassName="text-primary" />
+      </div>
+    );
   }
 
   if (error) {
