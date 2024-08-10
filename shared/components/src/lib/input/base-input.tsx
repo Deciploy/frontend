@@ -4,7 +4,7 @@ export interface InputProps {
   /**
    * The value of the input
    */
-  value?: string;
+  value?: string | number;
 
   /**
    * The label of the input
@@ -48,6 +48,16 @@ export interface InputProps {
   type?: HTMLInputTypeAttribute;
 
   /**
+   * The minimum value of the input
+   * */
+  minimum?: number;
+
+  /**
+   * The maximum value of the input
+   * */
+  maximum?: number;
+
+  /**
    * The onChange event handler
    * */
   onChange?: (e: string) => void;
@@ -70,6 +80,8 @@ export const BaseInput: FC<InputProps> = ({
   onBlur: handleBlur,
   prefix,
   suffix,
+  maximum,
+  minimum,
 }) => {
   return (
     <div className={`flex flex-col ${className}`}>
@@ -89,6 +101,8 @@ export const BaseInput: FC<InputProps> = ({
           type={type}
           onChange={(e) => onChange && onChange(e.target.value)}
           onBlur={(e) => handleBlur && handleBlur(e)}
+          min={minimum}
+          max={maximum}
         />
         {suffix && <div>{suffix}</div>}
       </div>

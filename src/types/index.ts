@@ -6,3 +6,4 @@ export * from './team';
 export * from './screenshot';
 export * from './insights';
 export * from './decision';
+export * from './application';
