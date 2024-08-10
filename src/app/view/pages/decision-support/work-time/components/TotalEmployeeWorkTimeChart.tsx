@@ -13,7 +13,10 @@ const TotalEmployeeWorkTimeChart: FC<TotalEmployeeWorkTimeChartProps> = ({
     ['Work Time', 'Total Employees'],
     ['Overtime', data.filter((item) => item.status === 'Overtime').length],
     ['Regular', data.filter((item) => item.status === 'Regular').length],
-    ['Underwork', data.filter((item) => item.status === 'Underwork').length],
+    [
+      'Underwork',
+      data.filter((item) => ['Underwork', 'Zero'].includes(item.status)).length,
+    ],
   ];
 
   return (
