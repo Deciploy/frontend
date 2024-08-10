@@ -1,8 +1,9 @@
 import { AiFillEye, AiOutlineFundProjectionScreen } from 'react-icons/ai';
 import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
-import { FaChartSimple, FaRightLeft } from 'react-icons/fa6';
+import { FaChartSimple, FaGears, FaRightLeft } from 'react-icons/fa6';
 import { MdDashboard } from 'react-icons/md';
+import WeightagePage from 'src/app/view/pages/settings/weightage/WeightagePage';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
 import LoginPage from '../../app/view/pages/auth/LoginPage';
@@ -22,6 +23,7 @@ export const routeNames = {
   screenshots: '/screenshots',
   insights: '/insights',
   workTime: '/work-time',
+  weightage: '/weightage',
 };
 
 export const appRoutes: AppRoute = {
@@ -96,6 +98,21 @@ export const appRoutes: AppRoute = {
       ),
       title: 'User',
       Icon: FaUser,
+    },
+    {
+      title: 'Settings',
+      Icon: FaGears,
+      children: [
+        {
+          title: 'Application Weightage',
+          path: routeNames.weightage,
+          Component: () => (
+            <ProtectedRoute>
+              <WeightagePage />
+            </ProtectedRoute>
+          ),
+        },
+      ],
     },
   ],
 };
