@@ -13,5 +13,5 @@ export interface EmployeeWorkTime {
 export interface AverageWorkTime {
   employee: User;
   averageWorkTime: number;
-  status: 'Overtime' | 'Regular' | 'Underwork';
+  status: 'Overtime' | 'Regular' | 'Underwork' | 'Zero';
 }
