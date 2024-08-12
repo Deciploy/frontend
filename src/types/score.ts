@@ -15,3 +15,8 @@ export interface DateCompanyScore {
   date: string;
   score: number;
 }
+
+export interface TodayPerformance {
+  score: number;
+  performanceIncrease: number;
+}
