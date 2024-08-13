@@ -21,18 +21,25 @@ const CompanyPerformanceChart: FC = () => {
       <LoadingIndicator loading={isLoading}>
         <div className="text-xl font-medium pb-2">Company Performance</div>
         <Chart
-          chartType="LineChart"
+          chartType="ComboChart"
           width="100%"
           height="400px"
           data={chartData}
           options={{
             curveType: 'function',
+            seriesType: 'bars',
+            series: { 4: { type: 'line' } },
             legend: false,
             hAxis: {
               title: 'Date',
             },
             vAxis: {
               title: 'Score',
+            },
+            animation: {
+              startup: true,
+              easing: 'linear',
+              duration: 1500,
             },
           }}
         />
