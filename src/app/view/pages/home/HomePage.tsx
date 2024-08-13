@@ -12,6 +12,21 @@ import TodayPerformanceCard from './components/TodayPerformanceCard';
 import TodayWorkTimeCard from './components/TodayWorkTimeCard';
 
 const HomePage: FC = () => {
+  const { data: companyPerformance, isLoading: isCompanyPerformanceLoading } =
+    useDateCompanyDataFetch('');
+
+  const { data: employeeScore, isLoading: isEmployeeScoreLoading } =
+    useEmployeeScoreDataFetch('');
+
+  const { data: teamScore, isLoading: isTeamScoreLoading } =
+    useTeamScoreDataFetch('');
+
+  const {
+    data: workTime,
+    isLoading: isWorkTimeLoading,
+    error,
+  } = useEmployeeWorkTime('');
+
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-3 gap-2">
