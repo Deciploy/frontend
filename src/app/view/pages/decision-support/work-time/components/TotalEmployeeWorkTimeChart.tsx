@@ -20,8 +20,8 @@ const TotalEmployeeWorkTimeChart: FC<TotalEmployeeWorkTimeChartProps> = ({
   ];
 
   return (
-    <div className="shadow-md">
-      <div className="p-4 text-xl font-bold">Total Employee Work Time</div>
+    <div className="p-4 shadow-md">
+      <div className="text-xl font-medium mb-2">Total Employee Work Time</div>
       <Chart
         chartType="PieChart"
         data={chartData}
