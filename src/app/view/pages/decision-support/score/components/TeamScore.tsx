@@ -2,7 +2,6 @@ import { useTeamScoreDataFetch } from '@api';
 import { DateTimeInput, Table } from '@components';
 import { useParamsQuery } from '@hooks';
 import { FC } from 'react';
-import DataRendingView from 'src/app/view/common/DataRenderingView';
 
 const TeamScore: FC = () => {
   const { setParams, getParams, query } = useParamsQuery();
