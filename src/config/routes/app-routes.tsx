@@ -3,6 +3,7 @@ import { FaUsers } from 'react-icons/fa';
 import { FaUser } from 'react-icons/fa';
 import { FaChartSimple, FaGears, FaRightLeft } from 'react-icons/fa6';
 import { MdDashboard } from 'react-icons/md';
+import ScorePage from 'src/app/view/pages/decision-support/score/ScorePage';
 import WeightagePage from 'src/app/view/pages/settings/weightage/WeightagePage';
 
 import { ProtectedRoute } from '../../app/view/common/ProtectedRoute';
@@ -24,6 +25,7 @@ export const routeNames = {
   insights: '/insights',
   workTime: '/work-time',
   weightage: '/weightage',
+  score: '/score',
 };
 
 export const appRoutes: AppRoute = {
@@ -68,6 +70,15 @@ export const appRoutes: AppRoute = {
       title: 'Decisions',
       Icon: AiOutlineFundProjectionScreen,
       children: [
+        {
+          title: 'Score',
+          path: routeNames.score,
+          Component: () => (
+            <ProtectedRoute>
+              <ScorePage />
+            </ProtectedRoute>
+          ),
+        },
         {
           title: 'Work Time',
           path: routeNames.workTime,
