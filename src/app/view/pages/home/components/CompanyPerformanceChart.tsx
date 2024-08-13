@@ -19,7 +19,7 @@ const CompanyPerformanceChart: FC = () => {
   return (
     <div className="shadow-md p-4 min-h-[400px]">
       <LoadingIndicator loading={isLoading}>
-        <div className="text-xl font-medium pb-2">Employee Rating</div>
+        <div className="text-xl font-medium pb-2">Company Performance</div>
         <Chart
           chartType="LineChart"
           width="100%"
