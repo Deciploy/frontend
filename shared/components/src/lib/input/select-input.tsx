@@ -1,6 +1,9 @@
-import { FC } from 'react';
+import { FC, ReactNode, useState } from 'react';
+import { FaAngleDown } from 'react-icons/fa6';
 
-interface SelectInputProps {
+import { SelectOption } from '../types';
+
+export interface SelectInputProps {
   /**
    * The value of the input
    * */
@@ -9,10 +12,7 @@ interface SelectInputProps {
   /**
    * The options of the input
    * */
-  options?: {
-    value: string;
-    label: string;
-  }[];
+  options: SelectOption[];
 
   /**
    * The label of the input
@@ -20,9 +20,19 @@ interface SelectInputProps {
   label?: string;
 
   /**
+   * The prefix of the input
+   * */
+  prefix?: ReactNode;
+
+  /**
    * The placeholder of the input
    * */
   placeholder?: string;
+
+  /**
+   * Class name of the input
+   * */
+  className?: string;
 
   /**
    * If true, the error style will be applied
@@ -52,34 +62,59 @@ export const SelectInput: FC<SelectInputProps> = ({
   options = [],
   label,
   placeholder,
+  prefix,
+  className,
   isError,
   message,
-  fullWidth = false,
   onChange,
 }) => {
-  const borderStyle = isError
-    ? 'border-warning'
-    : ' focus:ring-primary-500 focus:border-primary-500';
+  const [isOpen, setIsOpen] = useState(false);
+  const [selected, setSelected] = useState<string | undefined>(value);
+
+  const handleSelect = (option: SelectOption) => {
+    setSelected(option.value);
+    setIsOpen(false);
+
+    onChange && onChange(option.value);
+  };
 
   return (
-    <div className={fullWidth ? 'w-full' : ''}>
-      <label className="block mb-2 text-sm font-medium text-gray-900">
-        {label}
-      </label>
-
-      <select
-        value={value}
-        placeholder={placeholder}
-        onChange={(e) => onChange?.(e.target.value)}
-        className={`bg-secondary-200 border ${borderStyle} text-gray-900 text-sm rounded-full leading-tight focus:outline-none block w-full p-2.5`}
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-
+    <div className={`flex flex-col ${className}`}>
+      {label && <label className="text-sm">{label}</label>}
+      <div className="relative inline-block">
+        <button
+          type="button"
+          className={`focus:outline-none rounded-md border py-2 px-3 flex items-center justify-between w-full first-letter first-letter first-letter ${
+            isError
+              ? 'border-warning'
+              : 'border-gray-300 focus-within:border-primary-300'
+          }`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {prefix && <div>{prefix}</div>}
+          {selected
+            ? options.find((option) => option.value === selected)?.label ||
+              placeholder ||
+              'Select'
+            : placeholder || 'Select'}
+          <FaAngleDown className="text-gray-500" />
+        </button>
+        {isOpen && (
+          <div className="absolute z-10 top-full left-0 w-full bg-white rounded-md shadow-md overflow-hidden">
+            <ul className="py-1">
+              {options.map((option) => (
+                <li
+                  key={option.value}
+                  className="text-gray-700 cursor-pointer hover:bg-gray-100 px-3 py-2"
+                  onClick={() => handleSelect(option)}
+                >
+                  {option.label}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
       {message && <p className="text-warning-500 text-sm mt-1">{message}</p>}
     </div>
   );

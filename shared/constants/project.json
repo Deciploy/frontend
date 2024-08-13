@@ -1,0 +1,29 @@
+{
+  "name": "constants",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "shared/constants/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/shared/constants",
+        "main": "shared/constants/src/index.ts",
+        "tsConfig": "shared/constants/tsconfig.lib.json",
+        "assets": ["shared/constants/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "shared/constants/**/*.ts",
+          "shared/constants/package.json"
+        ]
+      }
+    }
+  },
+  "tags": []
+}
