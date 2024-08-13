@@ -17,7 +17,7 @@ const EmployeeWorkTime: FC<EmployeeWorkTimeProps> = ({ data }) => {
 
   return (
     <div className="shadow-md p-4">
-      <div className="p-4 text-xl font-bold">Employee Average Work Time</div>
+      <div className="text-xl font-medium mb-2">Employee Average Work Time</div>
       {data.map((employeeTime) => (
         <div
           key={employeeTime.employee.id}
