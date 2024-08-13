@@ -11,7 +11,7 @@ export const LoadingIndicator: FC<PropsWithChildren<LoadingIndicatorProps>> = ({
 }) => {
   if (loading) {
     return (
-      <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
+      <div className="flex grow flex-col items-center justify-center h-full mt-auto">
         <CircleSpinner size={48} circleClassName="text-primary" />
       </div>
     );
