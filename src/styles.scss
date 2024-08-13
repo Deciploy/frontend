@@ -1,4 +1,15 @@
+@import 'react-toastify/dist/ReactToastify.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 /* You can add global styles to this file, and also import other style files */
+
+// table styles
+th {
+    @apply border-r py-2 px-4 bg-primary-500 text-white;
+}
+
+td {
+    @apply border-r py-2 px-4 border-b;
+}

@@ -15,7 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@components": ["shared/components/src/index.ts"]
+      "@components": ["shared/components/src/index.ts"],
+      "@deciploy/constants": ["shared/constants/src/index.ts"],
+      "@types": ["src/types/index.ts"],
+      "@api": ["src/api/index.ts"],
+      "@hooks": ["src/app/utils/hooks/index.ts"],
+      "@helpers": ["src/app/utils/helpers/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]
