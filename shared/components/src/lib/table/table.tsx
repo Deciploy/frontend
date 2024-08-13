@@ -9,7 +9,7 @@ interface TableProps<TData> {
   data: Array<TData>;
   loading?: boolean;
   error?: string;
-  renderRow: (item: TData) => ReactNode;
+  renderRow: (item: TData, index: number) => ReactNode;
   onDelete?: (item: TData) => void;
   onEdit?: (item: TData) => void;
 }
@@ -40,7 +40,7 @@ export const Table = <TData extends object>({
                 key={rowIndex}
                 className={rowIndex % 2 === 0 ? 'bg-gray-50' : ''}
               >
-                {renderRow(row)}
+                {renderRow(row, rowIndex)}
 
                 {(onEdit || onDelete) && (
                   <td className="flex justify-between py-2 px-4 border-r">

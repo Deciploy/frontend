@@ -1,4 +1,4 @@
-import { ApplicationType, Team } from '@types';
+import { Application, ApplicationType, Team } from '@types';
 
 export interface Weightage {
   id: string;
@@ -16,4 +16,9 @@ export interface TeamWeightageSavePayload {
   teamId: string;
   applicationTypeId: string;
   weightage: number;
+}
+
+export interface ApplicationUsage {
+  application: Application;
+  usage: number;
 }

@@ -1,23 +1,27 @@
-import { TodayPerformance } from '@types';
-import { FC } from 'react';
+import { useDateCompanyDataFetch } from '@api';
+import { getTodayPerformance } from '@helpers';
+import { FC, useMemo } from 'react';
+import { LoadingIndicator } from 'src/app/view/common';
 
-interface TodayPerformanceCardProps {
-  data: TodayPerformance;
-}
+const TodayPerformanceCard: FC = () => {
+  const { data: response, isLoading } = useDateCompanyDataFetch('');
 
-const TodayPerformanceCard: FC<TodayPerformanceCardProps> = ({ data }) => {
+  const data = useMemo(() => {
+    return getTodayPerformance(response?.data || []);
+  }, [response]);
+
   const color = data.performanceIncrease > 0 ? 'success' : 'warning';
   const text = data.performanceIncrease > 0 ? 'increase' : 'decrease';
 
   return (
-    <div>
-      <div
-        className={`shadow-md rounded-md p-4 bg-${color}-100 border-l-4 border-${color}-400 min-h-[150px]`}
-      >
-        <div className="text-xl font-medium pb-2">Today Performance</div>
+    <div
+      className={`shadow-md rounded-md p-4 bg-${color}-100 border-l-4 border-${color}-400 h-[150px]`}
+    >
+      <LoadingIndicator loading={isLoading}>
+        <div className="text-xl font-medium pb-2">Performance</div>
         <div className="flex justify-between">
           <div>
-            <div className="text-5xl font-medium">
+            <div className="text-4xl font-medium">
               {data.performanceIncrease} %
             </div>
             <div className="">performance {text}</div>
@@ -27,7 +31,7 @@ const TodayPerformanceCard: FC<TodayPerformanceCardProps> = ({ data }) => {
             <div className="text-2xl font-bold">{data.score}</div>
           </div>
         </div>
-      </div>
+      </LoadingIndicator>
     </div>
   );
 };

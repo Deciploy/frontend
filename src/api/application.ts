@@ -1,6 +1,7 @@
 import {
   Application,
   ApplicationType,
+  ApplicationUsage,
   NetworkResponse,
   TeamWeightage,
   TeamWeightageSavePayload,
@@ -21,3 +22,8 @@ export const useFetchApplicationWeightages = () =>
 
 export const useSaveWeightage = () =>
   usePost<NetworkResponse, Array<TeamWeightageSavePayload>>('weightage');
+
+export const useFetchApplicationUsage = (query?: string) =>
+  useFetch<NetworkResponse<Array<ApplicationUsage>>>(
+    `application/usage${query ? `?${query}` : ''}`
+  );

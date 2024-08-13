@@ -4,7 +4,6 @@ import { getEmployeeAverageWorkTime, getEmployeeWorkStatus } from '@helpers';
 import { useParamsQuery } from '@hooks';
 import { AverageWorkTime } from '@types';
 import { FC, useMemo, useState } from 'react';
-import { RiErrorWarningLine } from 'react-icons/ri';
 import {
   LoadingIndicator,
   TeamSelector,
@@ -12,7 +11,7 @@ import {
 } from 'src/app/view/common';
 
 import EmployeeWorkTime from './components/EmployeeWorkTime';
-import EmployeeWorkTimeChart from './components/EmployeeWorkTimeChart';
+import EmployeeWorkTimeTable from './components/EmployeeWorkTimeTable';
 import TotalEmployeeWorkTimeChart from './components/TotalEmployeeWorkTimeChart';
 
 const WorkTimePage: FC = () => {
@@ -78,21 +77,27 @@ const WorkTimePage: FC = () => {
       </div>
 
       <LoadingIndicator loading={isLoading}>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-4">
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
             <TotalEmployeeWorkTimeChart data={employeeAverageWorkTime} />
             <EmployeeWorkTime data={employeeAverageWorkTime} />
           </div>
-          {employeeWorkTime ? (
-            <EmployeeWorkTimeChart data={employeeWorkTime} />
-          ) : (
-            <div className="flex grow flex-col items-center justify-center mt-48 h-[50vh]">
-              <RiErrorWarningLine size={48} className="text-gray-500" />
-              <p className="mt-4 text-center text-gray-500">
-                Select a employee to show data
-              </p>
-            </div>
-          )}
+
+          <div className="grid grid-cols-2 gap-4">
+            <EmployeeWorkTimeTable
+              data={employeeAverageWorkTime.filter(
+                (d) => d.status == 'Overtime' || d.status == 'Regular'
+              )}
+              title="Regular Work Time"
+            />
+
+            <EmployeeWorkTimeTable
+              data={employeeAverageWorkTime.filter(
+                (d) => d.status == 'Underwork' || d.status == 'Zero'
+              )}
+              title="Undertime Work Time"
+            />
+          </div>
         </div>
       </LoadingIndicator>
     </div>
