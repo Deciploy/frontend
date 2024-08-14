@@ -11,7 +11,7 @@ const ApplicationUsageList: FC = () => {
   }, [response]);
 
   return (
-    <div className="flex flex-col shadow-md p-4 space-y-2">
+    <div className="flex flex-col shadow-md p-4 space-y-4">
       <div className="text-xl font-medium pb-2">Application usage</div>
 
       <LoadingIndicator loading={isLoading}>
