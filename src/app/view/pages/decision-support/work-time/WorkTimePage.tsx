@@ -86,16 +86,16 @@ const WorkTimePage: FC = () => {
           <div className="grid grid-cols-2 gap-4">
             <EmployeeWorkTimeTable
               data={employeeAverageWorkTime.filter(
-                (d) => d.status == 'Overtime' || d.status == 'Regular'
+                (d) => d.status == 'Overtime'
               )}
-              title="Regular Work Time"
+              title="Overtime Work Employees"
             />
 
             <EmployeeWorkTimeTable
               data={employeeAverageWorkTime.filter(
                 (d) => d.status == 'Underwork' || d.status == 'Zero'
               )}
-              title="Undertime Work Time"
+              title="Undertime Work Employees"
             />
           </div>
         </div>

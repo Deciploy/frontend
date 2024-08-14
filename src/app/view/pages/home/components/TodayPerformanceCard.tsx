@@ -18,16 +18,16 @@ const TodayPerformanceCard: FC = () => {
       className={`shadow-md rounded-md p-4 bg-${color}-100 border-l-4 border-${color}-400 h-[150px]`}
     >
       <LoadingIndicator loading={isLoading}>
-        <div className="text-xl font-medium pb-2">Performance</div>
+        <div className="text-xl font-medium pb-2">Productivity</div>
         <div className="flex justify-between">
           <div>
             <div className="text-4xl font-medium">
               {data.performanceIncrease} %
             </div>
-            <div className="">performance {text}</div>
+            <div className="">productivity {text}</div>
           </div>
           <div>
-            <div className="text-lg font-medium">Today Score</div>
+            <div className="text-lg font-medium">Score</div>
             <div className="text-2xl font-bold">{data.score}</div>
           </div>
         </div>

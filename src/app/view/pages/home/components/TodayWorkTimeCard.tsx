@@ -45,12 +45,12 @@ const TodayWorkTimeCard: FC = () => {
         <div className="flex justify-evenly">
           <div className="flex flex-col items-center">
             <div className="text-4xl font-medium">{underTimeWork}</div>
-            <div className="">Under time work</div>
+            <div className="">Under time</div>
           </div>
           <div className="text-4xl font-medium">/</div>
           <div className="flex flex-col items-center">
             <div className="text-4xl font-medium">{overTimeWork}</div>
-            <div className="">Over time work</div>
+            <div className="">Over time</div>
           </div>
         </div>
       </LoadingIndicator>
